@@ -9,10 +9,11 @@ This document should be used as a reminder for the reader to keep in mind the ba
 A simple way to compile the latex file and render the pdf is to first install the latex pacakge:
 ```bash
 sudo apt install texlive-latex-extra
+sudo apt install texlive-science
 ```
 And then run the following line:
 ```bash
-pdflatex main.tex
+pdflatex --shell-escape main.tex
 ```
 
 ## Document
