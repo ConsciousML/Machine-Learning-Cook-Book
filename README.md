@@ -22,4 +22,5 @@ A compiled pdf can be found at the root of the project if you just want to read 
 The content of this document is a simplification of various sections of these three book:
 - Deep Learning, by A. Courville, Ian Goodfellow, and Yoshua Bengio, 2016.
 - Machine Learning: a probabilistic perspective, by K.P. Murphy, 2012.
+- The Elements of  Statistical Learning, by T. Hastie, 2001.
 
