@@ -8,7 +8,7 @@ This document should be used as a reminder for the reader to keep in mind the ba
 ## Setup
 A simple way to compile the latex file and render the pdf is to first install the latex pacakge:
 ```bash
-sudo apt install texlive-latex-base
+sudo apt install texlive-latex-extra
 ```
 And then run the following line:
 ```bash
