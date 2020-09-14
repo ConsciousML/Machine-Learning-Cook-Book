@@ -16,7 +16,7 @@ pdflatex main.tex
 ```
 
 ## Document
-My Machine Learning Cook Book can be found as a pdf file at the root of the project. 
+A compiled pdf can be found at the root of the project if you just want to read the content without compiling it.
 
 ## References
 The content of this document is a simplification of various sections of these three book:
