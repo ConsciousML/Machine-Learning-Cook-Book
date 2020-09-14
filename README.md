@@ -16,6 +16,7 @@ And then run the following line:
 ```bash
 pdflatex -shell-escape main.tex
 ```
+If you find an empty table of content, rerun the previous line.
 
 ## Document
 A compiled pdf can be found at the root of the project if you just want to read the content without compiling it.
