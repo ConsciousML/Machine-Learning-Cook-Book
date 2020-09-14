@@ -1,0 +1,1102 @@
+\documentclass[12pt]{report}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[super]{nth}
+\usepackage{rotating}
+\usepackage{tikz}
+\usepackage{lscape}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{makecell}
+\usepackage{subcaption}
+\usepackage[page]{appendix}
+\usepackage{minted}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\setcounter{secnumdepth}{4}
+\usepackage{hyperref}
+\usepackage[xindy]{glossaries} 
+\hypersetup{
+    colorlinks=true, % false: boxed links; true: colored links
+    linkcolor=black, % color of internal links
+    citecolor=black, % color of links to bibliography
+    filecolor=black, % color of file links
+    urlcolor=black % color of external links
+}
+%\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+\renewcommand{\glstextformat}[1]{\textit{#1}}
+\usepackage{titlesec}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{setspace}
+\usepackage{scalerel}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+
+\setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
+\title{The Machine Learning Cook Book}								% Title
+\author{Axel Mendoza}								% Author
+\date{July 24, 2020}											% Date
+
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\thetitle}
+\cfoot{\thepage}
+
+\let\origdoublepage\cleardoublepage
+\newcommand{\clearemptydoublepage}{%
+  \clearpage
+  {\pagestyle{empty}\origdoublepage}%
+}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\input{glossary}
+\makeglossaries
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{titlepage}
+	\centering
+    \includegraphics[width=0.51\linewidth]{images/epita_logo.png}\\[2.0 cm]	% University Logo
+    \textsc{\Large Introducing}\\[0.4 cm]
+    %\textsc{{\large Confidential Report}}\\[0.2 cm]				% Course Name
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[0.6 cm]
+	
+	\begin{minipage}{0.4\textwidth}
+		\begin{flushleft} \large
+			\emph{Author:}\\
+			\theauthor
+			\end{flushleft}
+			\end{minipage}~
+			\begin{minipage}{0.4\textwidth}
+			\begin{flushright} \large
+			\emph{Date:} \\
+            \thedate									% Your Student Number
+		\end{flushright}
+		
+	\end{minipage}\\[0.6cm]
+	
+    %\rule{\linewidth}{0.2 mm}
+    %\includegraphics[width=0.45\linewidth]{engie_lab.png}	% University Logo
+	\vfill
+	
+\end{titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{
+\tableofcontents
+}
+\pagebreak
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Linear Algebra}\label{chap1}
+    \section{Matrix Transpose}
+        If $\boldsymbol{A} \in \mathbb{R}^{m, n}$ then $\boldsymbol{A}$ has $m$ columns and $n$ rows.
+        \begin{equation}
+            \boldsymbol{A} =
+            \begin{bmatrix} 
+                A_{1,1} & A_{1,2} \\
+                A_{2,1} & A_{2,2}\\
+                A_{3,1} & A_{3,2} \\
+            \end{bmatrix} \Rightarrow
+            \boldsymbol{A}^\top = 
+            \begin{bmatrix} 
+                A_{1,1} & A_{2,1} & A_{3,1} \\
+                A_{1,2} & A_{2,2} & A_{3,2} \\
+            \end{bmatrix}
+        \end{equation}
+    \section{Matrix Multiplication}
+        \begin{align}
+            \boldsymbol{C} = \boldsymbol{A}\boldsymbol{B} \Rightarrow C_{i,j} &= \sum_{k}{A_{i,k}B_{k,j}} \\
+            \boldsymbol{A}(\boldsymbol{B} + \boldsymbol{C}) &= \boldsymbol{A}\boldsymbol{B} + \boldsymbol{A}\boldsymbol{C} \\[8pt]
+            (\boldsymbol{A}\boldsymbol{B})^\top &= \boldsymbol{B}^\top \boldsymbol{A}^\top \\[8pt]
+            \boldsymbol{x}^\top \boldsymbol{y} &= \boldsymbol{y}^\top \boldsymbol{x} \\[8pt]
+            \boldsymbol{A}\odot \boldsymbol{B} &= (\boldsymbol{A})_{ij}(\boldsymbol{B})_{ij}~~~~~\textbf{Hadamard product}
+        \end{align}
+    \section{Identity and Inverse}
+        \begin{align}
+            \forall \boldsymbol{x} \in \mathbb{R}^{n}, \boldsymbol{I}_{n} \boldsymbol{x} &= \boldsymbol{x} \\
+            \boldsymbol{A}^{-1} \boldsymbol{A} &= \boldsymbol{I}_n \\
+             \boldsymbol{A} \boldsymbol{A}^{-1} &= \boldsymbol{I}_n
+        \end{align}
+    \section{Linear Dependance and Span}
+        A vector $\boldsymbol{u}$ is a \textbf{linear combination} of some set of vectors $\{\boldsymbol{v}_{(1)}, \dots, \boldsymbol{v}^{(n)}\}$ if:
+        \begin{equation}
+            \boldsymbol{u} = \sum_{i}{c_i \boldsymbol{v}^(i)}
+        \end{equation}
+        The \textbf{span} of a set of vector is the set of all points obtainable by linear combination of the original vectors.
+        
+        The linear equation:
+        \begin{align}
+            \forall \boldsymbol{A} \in \mathbb{R}^{m,n},~
+            \forall \boldsymbol{x} \in \mathbb{R}^{n},~ \forall \boldsymbol{b} \in \mathbb{R}^{m},~~~\boldsymbol{A}\boldsymbol{x} = \boldsymbol{b}
+        \end{align}
+        has a solution if and only if $\boldsymbol{b}$ is in the span of the columns of $\boldsymbol{A}$ or $\boldsymbol{A}$ has a set of at least $m$ \textbf{linearly independent} columns.
+        
+    \section{Determinant}
+        The determinant of a square matrix, denoted $\textbf{det}(\boldsymbol{A})$, is equal to the product of all the eigenvalues of the matrix. The absolute value of the determinant can be thought of as a measure of how much multiplication by the matrix expands or contracts space. If 0, then space is contracted completely along at least one dimension, causing it to lose all of its volume. If 1, then the transformation preserves volume.
+
+    
+    \section{Condition for Inverse Matrix}    
+        The \textbf{rank} of a matrix a matrix is defined as the maximum number of linearly independent column vectors in the matrix or the maximum number of linearly independent row vectors in the matrix. Both definitions are equivalent.
+        
+        Any squared matrix is invertible if its \textbf{determinant} is \textbf{non-zero}.
+        If $\boldsymbol{A} \in \mathbb{R}^{m,n}$ has a rank $n$ where $n \leq m$, $\boldsymbol{A}$ has a left inverse $\boldsymbol{B} \in \mathbb{R}^{n,m}$. If $\boldsymbol{A}$ has rank $m$ where $m \leq n$ then $\boldsymbol{A}$ has a right inverse $\boldsymbol{B} \in \mathbb{R}^{n,m}$.
+        
+    \section{Norms}
+    A norm is any function $f$ that satisfies the following properties:
+    \begin{itemize}
+        \item $f(\boldsymbol{x}) = 0 \Rightarrow \boldsymbol{x} = 0$
+        \item $f(\boldsymbol{x} + \boldsymbol{y}) \leq f(\boldsymbol{x}) + f(\boldsymbol{y})$~~~~ \textbf{triange inequality}
+        \item $\forall \alpha \in \mathbb{R},
+        f(\alpha\boldsymbol{x}) = |\alpha|f(\boldsymbol{x})$
+    \end{itemize}
+    
+    The most common norms are the following:
+    \begin{align}
+        ||\boldsymbol{x}||_1 &= \sum_i{|x_i|}~~~~~~~~
+        \boldsymbol{L}^{\boldsymbol{1}}~\textbf{norm}\\[8pt]
+        ||\boldsymbol{x}||_2 &= \sqrt{\sum_i{|x_i|^2}}~~~~ 
+        \boldsymbol{L}^{\boldsymbol{2}}~\textbf{norm}\\[8pt]
+        ||\boldsymbol{A}||_F &= \sqrt{\sum_{i,j}{\boldsymbol{A}_{i,j}^2}}~~~~~\textbf{Frobenius norm}\\[8pt]
+        ||\boldsymbol{x}||_2^2 &= \boldsymbol{x}^\top \boldsymbol{x}~~~~~~~~~~~\textbf{squared}~ \boldsymbol{L}^{\boldsymbol{2}}~\textbf{norm}\\[8pt]
+        \boldsymbol{x}^\top \boldsymbol{y} &= ||\boldsymbol{x}||_2 ||\boldsymbol{y}||_2 \cos\theta
+    \end{align}
+    The squared $\boldsymbol{L^2}$ norm is more computationally efficient than the $\boldsymbol{L^2}$ norm. The $\boldsymbol{L^1}$ norm should prevail when it is important to differentiate zero and close to zero values.
+    
+    \section{Special Kind of Matrix}
+        The matrix $\boldsymbol{D}$ is \textbf{diagonal} if $\boldsymbol{D}_{i,j} = 0$ where $i \neq j$.
+        
+        The inverse of a diagonal matrix exists if all the values in the diagonal are non zero then $\text{diag}(\boldsymbol{v})^{-1} = \text{diag}([1/v_1, \dots, 1/v_n]^\top)$.
+        
+        If $\boldsymbol{A}$ is \textbf{symmetric} then:
+        \begin{equation}
+            \boldsymbol{A} = \boldsymbol{A}^\top
+        \end{equation}
+        A \textbf{unit vector} is a vector with \textbf{unit norm}:
+        \begin{equation}
+            ||\boldsymbol{x}||_2 = 1
+        \end{equation}
+        A vector $\boldsymbol{x}$ and a vector $\boldsymbol{y}$ are orthogonal to each other if $\boldsymbol{x}^\top \boldsymbol{y} = 0$.
+        Two vectors are \textbf{orthonormal} if they have unit norm and are orthogonal.
+        \newpage
+        An \textbf{orthogonal matrix} is a squared matrix whose rows and columns are mutually orthogonal:
+        \begin{align}
+            \boldsymbol{A}^\top \boldsymbol{A} = \boldsymbol{A}\boldsymbol{A}^\top &= \boldsymbol{I} \\
+            \boldsymbol{A}^\top &= \boldsymbol{A}^{-1}
+        \end{align}
+
+    \section{QR Decomposition}
+        The \textbf{QR decomposition} is a decomposition of a matrix $\boldsymbol{A}$ into a product $\boldsymbol{A} = \boldsymbol{Q}\boldsymbol{R}$ of an orthogonal matrix $\boldsymbol{Q}$ and an upper triangular matrix $\boldsymbol{R}$. It is often used to solve linear least square problems.
+    
+        Using the \textbf{Householder QR algorithm}, the idea is to reduce the matrix   $\boldsymbol{A}$ to an upper triangular matrix $\boldsymbol{H}$ so that $\boldsymbol{A}$ and $\boldsymbol{H}$ have the same eigenvalues. Using the Householder reflection, we iteratively zero out the values under the diagonal for each columns of  $\boldsymbol{A}$.
+        
+        \begin{algorithm}[H]
+            \SetAlgoLined
+            \KwData{$\boldsymbol{A} \in  \mathbb{R}^{m,n}$}
+            \KwResult{orthogonal matrix $\boldsymbol{Q},$ upper triangular matrix $\boldsymbol{R}$}
+            \DontPrintSemicolon
+            Let $\boldsymbol{I} \in  \mathbb{R}^{m,m}$ be the identity matrix\;
+            $R = \boldsymbol{A}.\text{clone()}$\;
+            \For{$k = 1, 2, \dots, n - 1$}{
+                $\boldsymbol{x} = \boldsymbol{R}_{k:, k}$\;
+                $\boldsymbol{e} = \boldsymbol{I}_{k:, k}$\;
+                $\alpha = \text{sign}(x_0)||\boldsymbol{x}||_2$\;
+                $\boldsymbol{u} = \boldsymbol{x} + \alpha \boldsymbol{e}$\;
+                $\boldsymbol{v} = \boldsymbol{u} / ||\boldsymbol{u}||_2$\;
+                $\boldsymbol{V} = \boldsymbol{I}_{k:, k:} - 2\boldsymbol{v}\boldsymbol{v}^\top$\;
+                $\boldsymbol{R}_{k:, k:} = \boldsymbol{VR}_{k:, k:}$\;
+                \uIf{$k == 1$} {
+                    $\boldsymbol{Q} = \boldsymbol{V}$
+                }
+                \uElse {
+                    Let $\boldsymbol{V} \in  \mathbb{R}^{m,m}$ be the identity matrix\;
+                    $\boldsymbol{U}_{k:, k:} = \boldsymbol{V}$\;
+                    $\boldsymbol{Q} = \boldsymbol{UQ}$
+                }
+            }
+            \textbf{return} $\boldsymbol{Q}, \boldsymbol{R}$
+            \caption{Householder QR algorithm}
+        \end{algorithm}
+        \newpage
+
+    \section{Eigen Decomposition}
+        The eigen decomposition can only be applied to matrices that are \textbf{diagonalizable}. Every real squared symmetric matrix are diagonalizable.
+        An \textbf{eigen vector} of a squared matrix $\boldsymbol{A}$ is a non-zero vector $\boldsymbol{v}$ such that multiplication by  $\boldsymbol{A}$ alters only the scale of $\boldsymbol{v}$:
+        \begin{align}
+            \boldsymbol{A}\boldsymbol{v} = \lambda \boldsymbol{v}
+        \end{align}
+        The scalar $\lambda$ is the \textbf{eigen value} corresponding to this    vector.
+        The \textbf{eigen decomposition} of $\boldsymbol{A}$ is given by:
+        \begin{align}
+            \boldsymbol{A} =   \boldsymbol{V}\text{diag}(\boldsymbol{\lambda})\boldsymbol{V}^{-1}
+        \end{align}
+        $\boldsymbol{V}$ columns are the eigenvectors of $\boldsymbol{A}$ and $\boldsymbol{\lambda}$ contains the eigenvalues. If $\boldsymbol{A}$ is  a real symmetric matrix the eigen decomposition simplifies to:
+        \begin{align}
+            \boldsymbol{A} =   \boldsymbol{Q}\boldsymbol{\Lambda}\boldsymbol{Q}^{\top}
+        \end{align}
+        $\boldsymbol{Q}$ is an orthogonal matrix composed of eigenvectors of $\boldsymbol{A}$ and $\boldsymbol{\Lambda}$ is a diagonal matrix  containing the eigenvalues. The eigen decomposition can be interpreted as follows:
+        \begin{itemize}
+            \item $f(\boldsymbol{x}) = \boldsymbol{x}^\top \boldsymbol{A} \boldsymbol{x}$ subject to $||\boldsymbol{x}||_2 = 1$, if $\boldsymbol{x}$ is eigenvector of $\boldsymbol{A}$ then this quadratic equation is equal to $\lambda$ the eigenvalue associated to $\boldsymbol{x}$.
+            \item A matrix whose eigenvalues are all positive is call \textbf{positive definite}.
+            \item A matrix whose eigenvalues are all positive or zero-values is call \textbf{positive semi-definite}.
+            \item It is the same for negative values regarding \textbf{negative definite} and \textbf{negative semi-definite}.
+            \item If $\boldsymbol{A}$ is positive semi-definite then $\forall \boldsymbol{x},\boldsymbol{x}^\top  \boldsymbol{A} \boldsymbol{x} \geq 0$
+            \item Positive definite additionally guaranties that $\boldsymbol{x}^\top  \boldsymbol{A} \boldsymbol{x} = 0 \Leftarrow \boldsymbol{x} = 0$
+        \end{itemize}
+        
+        The \textbf{eigen decomposition} is performed as follows:
+        \begin{itemize}
+            \item Subtract the matrix by $\boldsymbol{\lambda}$
+            \item Find the determinant of the matrix
+            \item Find the $\boldsymbol{\lambda}$ values that solves $\text{det}(\boldsymbol{A} - \lambda\boldsymbol{I}) = 0$
+        \end{itemize}
+        
+        \begin{algorithm}[H]
+            \SetAlgoLined
+            \KwData{$\boldsymbol{A} \in  \mathbb{R}^{n,n}$}
+            \KwResult{$\boldsymbol{Q}$ containing eigenvectors, $\boldsymbol{\lambda}$ eigenvalues}
+            \DontPrintSemicolon
+            q = queue()\;
+            \For{$k = 1, 2, \dots$}{
+                $\boldsymbol{Q}, \boldsymbol{R} = \text{qr}(\boldsymbol{A})$\;
+                $\boldsymbol{A} = \boldsymbol{Q}^\top \boldsymbol{AQ}$\;
+                q.enqueue($\boldsymbol{Q}$)\;
+            }
+            $\boldsymbol{Q}$ = queue.dequeue()\;
+            \While{q is not empty}{
+                $\boldsymbol{X}$ = q.dequeue()\;
+                $\boldsymbol{Q} = \boldsymbol{X}^\top \boldsymbol{Q}$        
+            }
+            \caption{Eigen decomposition algorithm}
+            \textbf{return} $\boldsymbol{Q}^\top, \text{diag}(\boldsymbol{A})$
+        \end{algorithm}
+        Where qr(A) is the QR algorithm.
+    \section{Singular Value Decomposition}
+        A \textbf{singular} matrix is a matrix that is non invertible.
+        The \textbf{singular value decomposition} (SVD) factorizes a matrix into \textbf{singular vectors} and \textbf{singular values}. Every real matrix can be decomposed using \textbf{SVD}:
+        \begin{equation}
+            \boldsymbol{A} = \boldsymbol{U}\boldsymbol{D}\boldsymbol{V}^{\top}
+        \end{equation}
+        Suppose $\boldsymbol{A} \in \mathbb{R}^{m,n}$, $\boldsymbol{U} \in \mathbb{R}^{m,m}$, $\boldsymbol{D} \in \mathbb{R}^{m,n}$ and $\boldsymbol{V} \in \mathbb{R}^{n,n}$.
+        $\boldsymbol{U}$ and $\boldsymbol{A} \in \mathbb{V}^{m,n}$ are orthogonal matrices. $\boldsymbol{D}$ is diagonal and contains the \textbf{singular values}.
+        $\boldsymbol{U}$ contains the \textbf{left-singular vectors} and $\boldsymbol{V}$ contains the \textbf{right-singular vectors}.
+        
+        SVD can be interpreted as follows:
+        \begin{itemize}
+            \item The left-singular vectors of $\boldsymbol{A}$ are the eigenvectors of $\boldsymbol{A}\boldsymbol{A}^\top$.
+            \item The right-singular vectors of $\boldsymbol{A}$ are the eigenvectors of $\boldsymbol{A}^\top\boldsymbol{A}$
+            \item The non-zero singular values $\boldsymbol{A}$ are the square root of the eigenvalues of $\boldsymbol{A}^\top \boldsymbol{A}$ and $\boldsymbol{A}\boldsymbol{A}^\top$.
+        \end{itemize}
+        The most useful feature of SVD that we can use it to partially generalize matrix inversion to non-square matrices.
+        \newpage
+        
+        \begin{algorithm}[H]
+            \SetAlgoLined
+            \KwData{$\boldsymbol{A} \in  \mathbb{R}^{m,n}$}
+            \KwResult{$\boldsymbol{U}$, $\boldsymbol{D}$, $\boldsymbol{V}$}
+            \DontPrintSemicolon
+            $\boldsymbol{A}_l = \boldsymbol{A}^\top \boldsymbol{A}$\;
+            $\boldsymbol{A}_r = \boldsymbol{A}^\top \boldsymbol{A}$\;
+            $\_, \boldsymbol{U} =$ eig$(\boldsymbol{A}_l)$\;
+            $\boldsymbol{E}, \boldsymbol{V} =$ eig$(\boldsymbol{A}_r)$\;
+            \textbf{return} $\boldsymbol{U}$, \text{diag}($\boldsymbol{E}$), $\boldsymbol{V}$
+            \caption{Singular value decomposition algorithm}
+        \end{algorithm}
+        Where eig() is the eigen value decomposition.
+        
+    \section{The Moore-Penrose Pseudoinverse}
+        Matrix inversion is not defined for matrices that are not square. The pseudoinverse of $\boldsymbol{A}$ is defined as a matrix
+        \begin{align}
+            \boldsymbol{A}^+ &= \boldsymbol{V}\boldsymbol{D}^+ \boldsymbol{U}^\top \\
+        \end{align}
+        where $\boldsymbol{U}$, $\boldsymbol{D}$ and $\boldsymbol{V}$ are the singular value decomposition of $\boldsymbol{A}$ and the pseudoinverse $\boldsymbol{D}^+$ is obtained by taking the reciprocal of its non-zero elements then taking the transpose of the resulting matrix.
+        
+    \section{The Trace Operator}
+        The \textbf{trace operator} gives the sum of all the diagonal entries of a matrix:
+        \begin{equation}
+            \text{Tr}(\boldsymbol{A}) = \sum_i{\boldsymbol{A}_{i,i}}
+        \end{equation}
+        The Frobenius norm can be simplified by:
+        \begin{equation}
+            ||\boldsymbol{A}||\\_F = \sqrt{\text{Tr}(\boldsymbol{A)^\top }} 
+        \end{equation}
+        The trace operator is \textbf{invariant} in permutation:
+        \begin{equation}
+            \text{Tr}(\boldsymbol{A}\boldsymbol{B}) = \text{Tr}(\boldsymbol{B}\boldsymbol{A})
+        \end{equation}
+        
+    \section{Principal Components Analysis}
+        Suppose a collection of $m$ points $\{\boldsymbol{x}^{(1)}, \dots, \boldsymbol{x}^{(m)}\}$ in $\mathbb{R}^n$. The \textbf{principal components analysis} aims to reduce the dimensionality of the points while losing the least precision as possible.
+        For each point $\boldsymbol{x}^{(i)} \in \mathbb{R}^n$ we will find a corresponding code vector $\boldsymbol{c}^{(i)} \in \mathbb{R}^l$ where $l$ is smaller than $n$.
+        Let $f$ be the encoding function and $g$ be the decoding function and $\boldsymbol{D} \in \mathbb{R}^{n,l}$ is the decoding matrix whose columns are orthonormal:
+        \begin{align}
+            f(\boldsymbol{x}) &= \boldsymbol{D}^\top \boldsymbol{x} \\
+            g(f(\boldsymbol{x})) &= \boldsymbol{D}\boldsymbol{D}^\top \boldsymbol{x}
+        \end{align}
+        
+        \begin{algorithm}[H]
+            \SetAlgoLined
+            \KwData{$\boldsymbol{A} \in  \mathbb{R}^{m,n}$, $t$ target dimension}
+            \KwResult{$\boldsymbol{D}$ transform matrix, $\boldsymbol{R}$ reduced data}
+            \DontPrintSemicolon
+            \setstretch{1.25}
+            $\boldsymbol{A} = \boldsymbol{A} - \frac{1}{mn} \sum_{i,j}{\boldsymbol{A}_{i,j}}$\;
+            $\boldsymbol{B} = \frac{1}{n - 1} \boldsymbol{A}^\top \boldsymbol{A}$\;
+            $\boldsymbol{U}, \boldsymbol{S}, \boldsymbol{V} = svd(\boldsymbol{B})$\;
+            $\boldsymbol{D} = \boldsymbol{V}_{:, :t}$\;
+            $\boldsymbol{R} = \boldsymbol{D}^\top \boldsymbol{A}$\;
+            \textbf{return} $\boldsymbol{D}$, $\boldsymbol{R}$
+            \caption{Principal component analysis algorithm}
+        \end{algorithm}
+        
+    \section{Jacobian Matrix} imposes locally near that point:
+    Suppose a function $f:\mathbb{R}^n \rightarrow \mathbb{R}^m$. The \textbf{Jacobian matrix} of $f$ is defined to be a matrix $\boldsymbol{J} \in \mathbb{R}^(m,n)$ as:
+    \begin{equation}
+        \displaystyle \mathbf {J} ={\begin{bmatrix}{\dfrac {\partial \mathbf {f} }{\partial x_{1}}}~\cdots~{\dfrac {\partial \mathbf {f} }{\partial x_{n}}}\end{bmatrix}}={\begin{bmatrix}{\dfrac {\partial f_{1}}{\partial x_{1}}}~\cdots~{\dfrac {\partial f_{1}}{\partial x_{n}}}\\\vdots~\ddots\vdots~\\{\dfrac {\partial f_{m}}{\partial x_{1}}}~\cdots~{\dfrac {\partial f_{m}}{\partial x_{n}}}\end{bmatrix}}
+    \end{equation}
+     The Jacobian matrix represents the differential of $f$ at every point where $f$ is differentiable. At each point, the Jacobian matrix can be thought of as describing the amount of stretching, rotating or transforming that the function impose locally near that point.
+     
+    \section{Taylor Series}
+    The \textbf{Taylor series} allows us to approximate a function into a $n$ degree polynomial function at a given point $x_0$:
+    \begin{equation}
+        f(x) = \sum_{n = 0}^{\infty}{\frac{f^{(n)}(x_0)}{n!}(x - x_0)^n}
+    \end{equation}
+\chapter{Probability and Information Theory}
+    \section{Random Variable}
+    A \textbf{random variable} is a variable that can take on different values randomly.
+    The random variable $\mathbf{x}$ has one of its values as $\boldsymbol{x}$. On its own, a random variable is just a description of the states that are possible; it must be coupled with a probability distribution that specifies how likely each of these states are.
+
+    \section{Probability Distribution}
+        A probability distribution over discrete variables may be described using a \textbf{probability mass function} (PMF).
+        The probability mass function maps from a state of a random variable to the probability of that random variable taking on that state. A probability distribution over many variables is known as a \textbf{joint probability distribution}. $P(\mathbf{x} = x, \text{y} = y)$ denotes the probability that $\mathbf{x} = x$ and $\mathbf{y} = y$ simultaneously.
+        $P$ must satisfy:
+        \begin{itemize}
+            \item The domain of $P$ must be the set of all possible states of x. 
+            \item $\forall x \in \mathbf{x}, 0 \leq P(x) \leq 1$
+            \item $\sum_{x \in \mathbf{x}}{P(x)} = 1$
+        \end{itemize}
+        
+        A probability distribution over continuous variables is described using a \textbf{probability density function} (PDF). $p$ must satisfy:
+        \begin{itemize}
+            \item The domain of $p$ must be the set of all possible states of x.
+            \item $\forall x \in \mathbf{x},\;p(x) \geq 0$
+            \item $\int{p(x)dx} = 1$
+        \end{itemize}
+        A probability density function p(x) does not give the probability of a specific state directly, instead the probability of landing inside an infinitesimal region with volume $\delta x$ is given by $p(x)\delta x$.
+    
+    \section{Marginal Probability}
+        The probability distribution over a subset of random variable is known as the \textbf{marginal probability distribution}. For example, suppose we have discrete random variables x and y, and we know $P(\mathbf{x}, \mathbf{y})$. We can find $P(\mathbf{x})$ with the sum rule:
+        \begin{align}
+            \forall x \in \mathbf{x}, P(\mathbf{x} = x) &= \sum_y{P(\mathbf{x} = x, \mathbf{y} = y)} \\
+            \forall x \in \mathbf{x}, p(x) &= \int_y{p(x,y)dy}
+        \end{align}
+        
+    \section{Conditional Probability}
+        The \textbf{conditional probability} denotes the probability of some event, given that some other event has happened:
+        \begin{equation}
+            P(\mathbf{x} = x~|~\mathbf{y} = y) = \frac{P(\mathbf{x} = x, \mathbf{y} = y)}{P(\mathbf{y} = y)}
+        \end{equation}
+
+    \section{The Chain Rule of Conditional Probabilities}
+        Any joint probability distribution over many random variables may be decomposed into conditional distributions over only one variable:
+        \begin{equation}
+            P\left(x^{(1)}, \dots, x^{(n)}\right) = P\left(x^{(1)}\right)\prod_{i = 2}^{n}{P\left(x^{(i)}~|~x^{(1)},\dots ,x^{(i - 1)}\right)}
+        \end{equation}
+        
+    \section{Independence and Conditional Independence}
+        Two random variables x and y are \textbf{independent} if their probability distribution can be expressed as a product of two factors, one involving only x and one involving only y:
+        \begin{equation}
+            \forall x \in \mathbf{x}, \forall y \in \mathbf{y}, P(\mathbf{x} = x, \mathbf{y} = y) = P(\mathbf{x} = x)P(\mathbf{y} = y)
+        \end{equation}
+        
+        Two random variables x and y are \textbf{conditionally independent} given a random variable z if the conditional probability distribution over x and y factorizes in this way for every value of z:
+        \begin{equation}
+            \forall x \in \mathbf{x}, \forall y \in \mathbf{y}, \forall z \in \mathbf{z},  P(\mathbf{x} = x, \mathbf{y} = y~|~\mathbf{z} = z) = P(\mathbf{x} = x~|~\mathbf{z} = z)P(\mathbf{y} = y~|~\mathbf{z} = z)
+        \end{equation}
+        
+    \section{Expectation, Variance and Covariance}
+        The \textbf{expectation} or expected value of some function $f(x)$ with respect to a probability distribution $P(x)$ is the average or \textbf{mean} value that $f$ takes on when $x$ is drawn from $P$:
+        \begin{align}
+             \mathbb{E}_{x \sim P}\left[f(x)\right] &= \sum_{x \in \mathbf{x}}{P(x)f(x)} \\[7pt]
+             \mathbb{E}_{x \sim p}\left[f(x)\right] &= \int{p(x)f(x)dx} \\[7pt]
+             \mathbb{E}_{\mathbf{x}}\left[\alpha f(x) + \beta g(x)\right] &= \alpha\mathbb{E}_{\mathbf{x}}\left[f(x)\right] + \beta\mathbb{E}_{\mathbf{x}}\left[g(x)\right]
+        \end{align}
+        
+        The \textbf{variance} gives a measure of how much the values of a function of a random variable x vary as we sample different values of x from its probability distribution:
+        \begin{align}
+            \text{Var}(f(x)) = \mathbb{E}_{\text{x}}\left[\left(f(x) - \mathbb{E}_{\text{x}}\left[f(x)\right]\right)^2\right]
+        \end{align}
+        When the variance is low, the values of $f(x)$ cluster near their expected value. The square root of the variance is known as the \textbf{standard deviation}.
+        The \textbf{covariance} gives some sense of how much two values are linearly related to each other, as well as the scale of these variables:
+        \begin{align}
+            \text{Cov}(f(x), g(y)) &= \mathbb{E}\left[(f(x) - \mathbb{E}[f(x)])(g(y) - \mathbb{E}[g(y)])\right] \\
+            \text{Cov}(\boldsymbol{x})_{i,j} &= \text{Cov}(x_i, x_j) \\
+            \text{Cov}(x_i, x_i) &= \text{Var}(x_i)
+        \end{align}
+        High absolute values of the covariance mean that the values change very much and are both far from their respective means at the same time. If the sign of the covariance is positive, then both variables tend to take on relatively high values simultaneously. If the sign of the covariance is negative, then one variable tends to take on a relatively high value at the times that the other takes on a relatively low value and vice versa. Other measures such as \textbf{correlation} normalize the contribution of each variable in order to measure only how much the variables are related, rather than also being affected by the scale of the separate variables.
+        
+        The correlation is described by:
+        \begin{equation}
+            \text{Corr}(\boldsymbol{X}, \boldsymbol{Y}) = \frac{\text{Cov}(\boldsymbol{X}, \boldsymbol{Y})}{\text{Var}(\boldsymbol{X})\text{Var}(\boldsymbol{Y})}
+        \end{equation}
+        
+    \section{Common Probability Distributions}
+        \subsection{Bernoulli Distribution}
+            The \textbf{Bernoulli distribution} is a distribution over a single binary random variable. It is controlled by a single parameter $p \in [0, 1]$, which gives the probability of the random variable being equal to $1$. It has the following properties:
+            \begin{align}
+                P(\mathbf{x} = 1) &= p\\
+                P(\mathbf{x} = 0) &= 1 - p\\
+                P(\mathbf{x} = x) &= p^x (1 - p)^{1-x} \\
+                \mathbb{E}_{\mathbf{x}}[\mathbf{x}] &= p \\
+                \text{Var}_{\mathbf{x}}(\mathbf{x}) &= p(1 - p)
+            \end{align}
+            
+        \subsection{Multinoulli Distribution}
+            The \textbf{multinoulli} or \textbf{categorical distribution} is a distribution over a single discrete variable with k different states, where k is finite. The multinoulli distribution is parametrized by a vector $\boldsymbol{p} \in [0, 1]^{k - 1}$ where $p_i$ gives the probability of the $i$-th state. The final, $k$-th state’s probability is given by $1 − \boldsymbol{1}^\top \boldsymbol{p}$
+            
+        \subsection{Gaussian Distribution}
+            The most commonly used distribution over real numbers is the \textbf{normal distribution}, also known as the \textbf{Gaussian distribution}:
+            \begin{align}
+                N(x; \mu, \sigma^2) &= \sqrt{\frac{1}{2\pi\sigma^2}}\text{exp}\left(-\frac{1}{2}\left(\frac{x - \mu}{\sigma}\right)^2\right) \\
+                N(x; \mu, \beta^{-1}) &= \sqrt{\frac{\beta}{2\pi}}\text{exp}\left(-\frac{\beta}{2}\left(x - \mu\right)^2\right)
+            \end{align}
+            The two parameters $\mu \in \mathbb{R}$ and $\sigma \in (0, \infty)$ control the normal distribution. The parameter $\mu$ gives the coordinate of the central peak. This is also the mean of the distribution: $\mathbb{E}[\text{x}] = \mu$. The standard deviation of the distribution is given by $\sigma$, and the variance by $\sigma^2$.$\beta$ is the inverse variance of the Gaussian distribution.
+            The second equation is more efficient than the first one. The normal distribution generalizes to $\mathbb{R}^n$, in which case it is known as the \textbf{multivariate normal distribution}. It may be parametrized with a positive definite symmetric matrix $\boldsymbol{\Sigma}$:
+            \begin{align}
+                N(\boldsymbol{x}; \boldsymbol{\mu}, \boldsymbol{\Sigma}) &= \sqrt{\frac{1}{(2\pi)^n \text{det}(\boldsymbol{\Sigma})}}\text{exp}\left(-\frac{1}{2}(\boldsymbol{x} - \boldsymbol{\mu})^\top \boldsymbol{\Sigma}^{-1}(\boldsymbol{x} - \boldsymbol{\mu})\right) \\
+                N\left(\boldsymbol{x}; \boldsymbol{\mu}, \boldsymbol{\beta}^{-1}\right) &= \sqrt{\frac{\text{det}(\boldsymbol{\beta)}}{(2\pi)^n }}\text{exp}\left(-\frac{1}{2}(\boldsymbol{x} - \boldsymbol{\mu})^\top \boldsymbol{\beta}(\boldsymbol{x} - \boldsymbol{\mu})\right)
+            \end{align}
+            Where $\boldsymbol{\mu}$ is the mean of the distribution in a form of a vector, $\boldsymbol{\Sigma}$ is the covariance matrix (often diagonal) and $\boldsymbol{\beta}$ is the \textbf{precision matrix}.
+            
+        \subsection{Exponential and Laplace Distributions}
+            In the context of deep learning, we often want to have a probability distribution with a sharp point at x = 0. To accomplish this, we can use the \textbf{exponential distribution}:
+            \begin{equation}
+                p(x;\lambda) = \lambda\boldsymbol{1}_{x \geq 0}\text{exp}\left(-\lambda x \right)
+            \end{equation}
+
+            A closely related probability distribution that allows us to place a sharp peak of probability mass at an arbitrary point µ is the \textbf{Laplace distribution}:
+            \begin{equation}
+                \text{Laplace}(x;\mu,\gamma) = \frac{1}{2\gamma}\text{exp}\left(-\frac{|x - \mu|}{\gamma}\right)
+            \end{equation}
+        \subsection{Mixtures of Distributions}
+            A \textbf{mixture distribution} is made up of several distribution. On each trial, the choice of which component distribution generates the sample is determined by sampling a component identity from a multinoulli distribution:
+            \begin{equation}
+                P(\mathbf{x}) = \sum_i{P(\mathbf{c} = i)}P(\mathbf{x}~|~\mathbf{c}=i)
+            \end{equation}
+            where $P(\mathbf{c})$ is the multinoulli distribution over component identities.
+            A \textbf{latent variable} is a random variable that we cannot observe directly. The distribution $P(c)$ over the latent variable and the distribution $P(\mathbf{x} | \mathbf{c})$ relating the latent variables to the visible variables determines the shape of the distribution $P(\mathbf{x})$ even though it is possible to describe $P(\mathbf{x})$ without reference to the latent.
+    \section{Useful Properties of Common Functions}
+        The \text{logistic sigmoid} is commonly used to produce the $p$ parameter of a Bernoulli distribution because its range is $(0,1)$:
+        \begin{equation}
+            \sigma(x) = \frac{1}{1 + exp(-x)}
+        \end{equation}
+        The \textbf{softplus function} can be useful for producing the $\beta$ or $\sigma$ parameter of a normal distribution because its range is $(0,\infty)$:
+        \begin{equation}
+            x^+ = \text{max}(0, x)
+        \end{equation}
+    \section{Bayes' Rule}
+        We often find ourselves in a situation where we know $P(\mathbf{y}~|~\mathbf{x})$ and need to know $P(\mathbf{x}~|~\mathbf{y})$. Fortunately, if we also know $P(\mathbf{x})$, we can compute the desired quantity using \textbf{Bayes’ rule}:
+        \begin{equation}
+            P(\mathbf{x}~|~\mathbf{y}) = \frac{P(\mathbf{x})P(\mathbf{y}~|~\mathbf{x})}{P(\mathbf{y})}
+        \end{equation}
+    \section{Information Theory}
+        The basic intuition behind information theory is that learning that an \textbf{unlikely event} has occurred is more informative than learning that a likely event has occurred. We can quantify the amount of uncertainty in an entire probability distribution using the \textbf{Shannon entropy}:
+        \begin{align}
+            I(x) &= -\text{log}\,P(x)\qquad\textbf{self-information} \\  
+            H(\mathbf{x}) = \mathbb{E}_{\mathbf{x}}[I(x)] &= -\mathbb{E}_{\mathbf{x}}[\text{log}\,P(x)]
+        \end{align}
+        the Shannon entropy of a distribution is the expected amount of information in an event drawn from that distribution.
+        
+        If we have two separate probability distributions $P(x)$ and $Q(x)$ over the same random variable $\mathbf{x}$, we can measure how different these two distributions are using the \textbf{Kullback-Leibler} (KL) divergence:
+        \begin{equation}
+            D_{\text{KL}}(P||Q) = \mathbb{E}_{\mathbf{x}\,\sim P}\left[\text{log}\,\frac{P(x)}{Q(x)}\right] = \mathbb{E}_{\mathbf{x}\sim P}\,[\text{log}\,P(x) - \text{log}\,Q(x)]
+        \end{equation}
+        The KL divergence is conceptualized as a measure of distance between two distributions. One similar measure is the \textbf{cross-entropy}:
+        \begin{equation}
+            H(P,Q) = -\mathbb{E}_{\mathbf{x}\sim P}\,[log(\,Q(x))]
+        \end{equation}
+        The KL divergence and cross-entropy are not symmetric.
+    \subsection{Structured Probabilistic Models}
+        \textbf{Structured probabilistic} model or \textbf{graphical model} represent the factorization of a probability distribution with a graph.
+        \textbf{Directed} models use graphs with directed edges, it contains one factor for every random variable $\mathbf{x}_i$ and its parent $Pag(\mathbf{x}_i)$:
+        \begin{equation}
+            p(\boldsymbol{\mathbf{x}}) = \prod_i{p(\mathbf{x}_i~|~Pag(\mathbf{x}_i))}
+        \end{equation}
+        
+\chapter{Numerical Computation}
+    \section{Overflow, Underflow and Conditioning}
+        \textbf{Underflow} occurs when numbers are divided by zero.
+        \textbf{Overflow} occurs when numbers with large magnitude are approximated as $\infty$ or $−\infty$. Further arithmetic will usually change these infinite values into not-a-number values.
+        
+        \textbf{Conditioning} refers to how rapidly a function changes with respect to small changes in its inputs. Consider the function $f(\boldsymbol{x}) = \boldsymbol{A}^{-1}\boldsymbol{x}$. When $\boldsymbol{A} \in \mathbb{R}^{n,n}$ has an eigenvalue decomposition, its \textbf{condition number} is:
+        \begin{equation}
+            \text{max}_{i,j}\left|\frac{\lambda_i}{\lambda_j}\right|
+        \end{equation}
+        This is the ratio of the magnitude of the largest and smallest eigenvalue. When this number is large, matrix inversion is particularly sensitive to error in the input.
+    \section{Gradient-Based Optimization}
+        The \textbf{Gradient descent} method takes steps proportional to the negative of the gradient of a function at a given point, in order to iteratively minimize the objective function. When $f'(x) = 0$ the derivative provides no information and these points are known as \textbf{critical points} or \textbf{stationary points}. A local \textbf{minimum} is a point where $f(x)$ is lower than all neighboring points. A local \textbf{maximum} is a point where $f(x)$ is higher than all neighboring points. If a point is neither of both, it is known as a \textbf{saddle point}.
+        
+        The \textbf{gradient} generalizes the notion of derivative to the case where the derivative is with respect to a vector: the gradient of $f$ is the vector containing all of the partial derivatives, denoted $\nabla_{\boldsymbol{x}}f(\boldsymbol{x})$.
+        
+        The \textbf{directional derivative} in direction $\boldsymbol{u}$ (a unit vector) is the slope of the function $f$ in direction $\boldsymbol{u}$. In other words, the directional derivative is the derivative of the function $f(\boldsymbol{x} + \sigma \boldsymbol{u})$ with respect to $\sigma$ close to 0. To minimize $f$, we would like to find the direction in which $f$ decreases the fastest. We can do this using the directional derivative:
+        \begin{align}
+            &\min_{\boldsymbol{u}, \boldsymbol{u}^\top \boldsymbol{u} = 1}{\boldsymbol{u}^\top \nabla_{\boldsymbol{x}} f(\boldsymbol{x})} \\
+            = &\min_{\boldsymbol{u}, \boldsymbol{u}^\top \boldsymbol{u} = 1}{||\boldsymbol{u}||_2 ||\nabla_{\boldsymbol{x}} f(\boldsymbol{x})||_2 \cos \theta}
+        \end{align}
+        ignoring factors that do not depend on $\boldsymbol{u}$, this simplifies to $\min_{u}{\cos \theta}$. This is minimized when $\boldsymbol{u}$ points in the opposite direction as the gradient. Each step of the gradient descent method proposes a new points:
+        \begin{equation}
+            \boldsymbol{x'} = \boldsymbol{x} - \epsilon \nabla_{\boldsymbol{x}}f(\boldsymbol{x})
+        \end{equation}
+        where $\epsilon$ is the learning rate.
+        
+    \section{Hessian Matrices}
+        The \textbf{second derivative} tells us how the first derivative will change as we vary the input. We can think of the second derivative as measuring \textbf{curvature}:
+        \begin{itemize}
+            \item $f''(x) = 0 \rightarrow$ there is no curvature.
+            \item $f''(x) > 0 \rightarrow$ curves up.
+            \item $f''(x) < 0 \rightarrow$ curves down.
+        \end{itemize}
+        When the input is multidimensional, there is multiple second derivative. The \textbf{Hessian matrix} contains them all:
+        \begin{equation}
+            \boldsymbol{H}(f)(\boldsymbol{x})_{i,j} = \frac{\partial^2}{\partial x_j \partial x_i}f(\boldsymbol{x})
+        \end{equation}
+        Because the Hessian matrix is real and symmetric, we can decompose it into a set of real eigenvalues and an orthogonal basis of eigenvectors. The second derivative in a specific direction represented by a unit vector $\boldsymbol{d}$ is given by $\boldsymbol{d}^\top \boldsymbol{H}\boldsymbol{d}$. When $\boldsymbol{d}$ is an eigenvector of $\boldsymbol{H}$ , the second derivative in that direction is given by the corresponding eigenvalue. At a saddle point we can use the second derivative to find in which direction the function will curve downwards. Unfortunately if $f''(x) = 0$, we are in a flat region.
+        
+    \section{Lipschitz continuous function}
+        A \textbf{Lipschitz continuous function} is a function $f$ whose rate
+        of change is bounded by a Lipschitz constant $k$:
+        \begin{equation}
+            \forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsymbol{y})| \leq K||\boldsymbol{x} - \boldsymbol{y}||_2
+        \end{equation}
+        It allows us to quantify our assumption that a small change in the input made by an algorithm such as gradient descent will have a small change in the output.
+        
+    \section{Constrained Optimization}
+        The \textbf{Karush–Kuhn–Tucker} (KKT) introduces a function called the \textbf{generalized Lagrange function}:
+        \begin{align}
+            L(\boldsymbol{x}, \boldsymbol{\lambda}, \boldsymbol{\sigma}) &= f(\boldsymbol{x}) + \sum_i{\lambda_i g^{(i)}(\boldsymbol{x})} + \sum_j{\sigma_j h^{(j)}(\boldsymbol{x})} \\[7pt]
+            \mathbb{S} &= \left\{\boldsymbol{x}~|~\forall i, g(\boldsymbol{x})^{(i)} = 0~\text{and}~\forall j, h(\boldsymbol{x})^{(j)} \leq 0\right\} \\[7pt]
+            &\max_{\boldsymbol{x}}{\min_{\boldsymbol{\lambda}}{\min_{\boldsymbol{\sigma, \sigma \geq 0}}{L(\boldsymbol{x}, \boldsymbol{\lambda}, \boldsymbol{\sigma})}}} \approx \min_{\boldsymbol{x} \in \mathbb{S}}{f(\boldsymbol{x})}
+        \end{align}
+        where $\lambda_i$ and $\sigma_j$ are the KKT multipliers.
+        
+\chapter{Machine Learning Concepts}
+    \section{Supervised and Unsupervised Learning}
+        \textbf{Unsupervised learning} algorithms experience a dataset containing many features, then learn useful properties of the structure of this dataset.
+        
+        \textbf{Supervised learning} algorithms experience a dataset containing features, but each example is also associated with a label or target.
+        
+    \section{Discriminative and Generative models}
+        A \textbf{discriminative} model models the decision boundary between the classes. A \textbf{generative} model explicitly models the actual distribution of each class. In final both of them is predicting the conditional probability P(class | features). But Both models learn different probabilities.
+        A Generative Model learns the joint probability distribution p(x,y). It predicts the conditional probability with the help of Bayes Theorem. A Discriminative model learns the conditional probability distribution $p(y|x)$.
+        %\begin{equation}
+        %    \boldsymbol{w} = \left(\boldsymbol{X}^{\text{train}\top} \boldsymbol{X}^{\text{train}}\right)^{-1}\boldsymbol{X}^{\text{train}\top} \boldsymbol{y}^{\text{train}}
+        %\end{equation}
+        %We also add an extra 1 column for the bias.
+    \section{Vapnik-Chervonenkis Dimension}
+        The \textbf{Vapnik-Chernovenkis} (VC) dimension provides a general measure of complexity of a model. The VC dimension of the class $\{f(x, \alpha)\}$ is defined to be the largest number of points that can be shattered by members of $\{f(x, \alpha)\}$.
+        
+    \section{Regularization}
+        \textbf{Regularization} is any modification we make to a learning algorithm that is intended to reduce its generalization error but not its training error.
+        \subsection{Weight Decay}
+            The regularization method called \textbf{weight decay} expressed a preferences for the weights to have smaller squared $L^2$ norm:
+            \begin{equation}
+                J(\boldsymbol{w}) = \text{MSE}_{\text{train}} + \lambda\boldsymbol{w}^\top\boldsymbol{w}
+            \end{equation}
+            Imposes a tradeoff on the weights to fit the training data and have small values.
+        
+    \section{Estimators, Bias and Variance}
+        \subsection{Estimators}
+            A \textbf{point estimator} is any function of the data:
+            \begin{equation}
+                \hat{\boldsymbol{\theta}}_m = g(\boldsymbol{x}^{(1)}, \dots,\boldsymbol{x}^{(m)})
+            \end{equation}
+            where $\{\boldsymbol{x}^{(1)}, \dots,\boldsymbol{x}^{(m)}\}$ is the random population drawn from a larger population we want to estimate something from.
+            A \textbf{function estimator} is a function $f(\boldsymbol{x})$ that describes the approximate relationship between $\boldsymbol{x}$ and $\boldsymbol{y}$.
+        \subsection{Bias}
+            An estimator is said \textbf{unbiased} if:
+            \begin{equation}
+                \text{bias}(\hat{\boldsymbol{\theta}}_m) = \mathbb{E}(\hat{\boldsymbol{\theta}}_m) - \boldsymbol{\theta} = 0
+            \end{equation}
+            where $\boldsymbol{\theta}$ is the true underlying parameter used to define the data generating distribution.
+        \subsection{Variance}
+            The \textbf{variance} of an estimator:
+            \begin{equation}
+                \text{Var}(\hat{\boldsymbol{\theta}})
+            \end{equation} 
+            where the random variable is the training set.
+            The \textbf{standard error} is the square root of the variance denoted $\text{SE}(\hat{\boldsymbol{\theta}})$.\\
+            
+            The variance or the standard error of an estimator provides a measure of how we would expect the estimate we compute from data to vary as we independently resample the dataset from the underlying data generating process. Just as we might like an estimator to exhibit low bias we would also like it to have relatively low variance.
+        
+        \subsection{Bias and Variance Trade-off}    
+            Bias and variance measure two different sources of error of an estimator. Bias measure the expected deviation from the true value of the parameter. Variance provides a value for describing the deviation from the expected value of the estimator that any particular sampling of the data is likely to cause.\\
+            
+            The best way to negotiate a trade-off between bias and variance is to use cross validation. Alternatively we can use the \textbf{mean squared error}:
+            \begin{align}
+             \text{MSE} &= \mathbb{E}(\hat{\boldsymbol{\theta}}_m -      \boldsymbol{\theta})^2) \\
+             \text{MSE} &= \text{bias}(\hat{\boldsymbol{\theta}}_m)^2 + \text{Var}(\hat{\boldsymbol{\theta}}) \\
+             \text{MSE}_{\text{test}} &= \frac{1}{m}||\boldsymbol{\hat{y}}^{(\text{test})} - \boldsymbol{y}^{(\text{test})} ||_2^2
+            \end{align}
+        \subsection{Consistency}
+            An estimator is said \textbf{consistant} if:
+            \begin{equation}
+                \text{p}\lim_{m \rightarrow \infty}(\hat{\boldsymbol{\theta}}_m) = \boldsymbol{\theta}
+            \end{equation}
+            In other words, as the training size become closer to the actual total population, the bias of the estimator should decrease.
+        \section{Maximum Likelihood Estimation}
+            Suppose a set of $m$ examples $\mathbb{X} = \{\boldsymbol{x}^{(1)}, \dots \boldsymbol{x}^{(m)}\}$ drawn independantly for the true but unknown data generating distribution $p_{\text{data}}(\boldsymbol{x})$.
+            Let $p_{\text{model}}(\boldsymbol{\mathbf{x}};\boldsymbol{\theta})$ be a parametric family of probability distributions over the same space indexed by $\boldsymbol{\theta}$. In other words, $p_{\text{model}}(\boldsymbol{x};\boldsymbol{\theta})$ maps any configuration $\boldsymbol{x}$ to a real number estimating the true probability $p_{\text{data}}(\boldsymbol{x})$. The maximum likelihood estimator for $\boldsymbol{\theta}$ is defined as:
+            \begin{align}
+                L(\boldsymbol{\theta}) &= \argmax_{\boldsymbol{\theta}}p_{\text{model}}(\mathbb{X};\boldsymbol{\theta}) \label{eq:1}\\
+                L(\boldsymbol{\theta}) &= \argmax_{\boldsymbol{\theta}}\prod_{i=1}^{m}{p_{\text{model}}(\boldsymbol{x}^{(i)};\boldsymbol{\theta})} \label{eq:2}\\
+                L(\boldsymbol{\theta}) &= \argmax_{\boldsymbol{\theta}}\sum_{i=1}^{m}{\text{log}\,p_{\text{model}}(\boldsymbol{x}^{(i)};\boldsymbol{\theta})} \label{eq:3}\\
+                L(\boldsymbol{\theta}) &= \argmax_{\boldsymbol{\theta}}\mathbb{E}_{\mathbf{x}\sim \hat{p}_{\text{data}}}\text{log}\,p_{\text{model}}(\boldsymbol{x};\boldsymbol{\theta}) \label{eq:4}\\
+                D_{\text{KL}}(\hat{p}_{\text{data}}||p_{\text{model}}) &= \mathbb{E}_{\mathbf{x}\sim \hat{p}_{\text{data}}}\left[\hat{p}_{\text{data}}(\boldsymbol{x}) - \text{log}\,p_{\text{model}}(\boldsymbol{x})\right] \label{eq:5} \\[5pt]
+                D_{\text{KL}}(\hat{p}_{\text{data}}||p_{\text{model}}) &= -\mathbb{E}_{\mathbf{x}\sim \hat{p}_{\text{data}}}\left[\text{log}\,p_{\text{model}}(\boldsymbol{x})\right] \label{eq:6}
+            \end{align}
+            The maximum likelihood can be expressed as a product of probability (\ref{eq:2}) because the configuration of $\mathbb{X}$ are drawn randomly and independently. This product is prone to underflow, taking the logarithm of the likelihood does not change its $\argmax$ (\ref{eq:3}). We can divide by $m$ to express the cost function as an expectation with respect to $\hat{p}_{\text{data}}$ (\ref{eq:4}). We want to minimize the dissimilarities between $\hat{p}_{\text{data}}$ and $p_{\text{model}}$, so the maximum likelihood can be expressed as a KL divergence (\ref{eq:5}). Because the term on the left does not depend on the training data, we only need to minimize (\ref{eq:6}) which is known as the \textbf{cross-entropy} between the empirical distribution defined by the training set and the probability distribution defined by model.
+            
+            \subsection{Conditional Log-Likelihood}
+                The maximum likelihood estimator can be generalized to an estimation of the conditional probability $p(\mathbf{y}~|~\mathbf{x}; \boldsymbol{\theta})$ in order to predict $\mathbf{y}$ given $\mathbf{x}$. If $\boldsymbol{X}$ represents all our inputs and $\boldsymbol{Y}$ represents all our targets then the \textbf{conditional log-likelihood} is defined as:
+                \begin{equation}
+                    L(\boldsymbol{\theta}) = \argmax_{\boldsymbol{\theta}}P(\boldsymbol{Y}~|~\boldsymbol{X};\boldsymbol{\theta})
+                \end{equation}
+                If the examples are assumed to be independant and identically distributed then:
+                \begin{equation}
+                    L(\boldsymbol{\theta}) = \argmax_{\boldsymbol{\theta}}\sum_{i=1}^{m}\text{log}\,{P(\boldsymbol{y}^{(i)}~|~\boldsymbol{x}^{(i)};\boldsymbol{\theta})}
+                \end{equation}
+        \section{Supervised Algorithms}
+            \subsection{Linear Regression}
+                Training a linear model using least square regression is equivalent to minimize the mean squared error:
+
+                \begin{align}
+                \text{MSE} &= \frac{1}{n}\sum_{i=1}^{n}{||\hat{y}_i - y_i ||_{2}^{2}} \\
+                \text{MSE} &= \frac{1}{n}||\boldsymbol{X}\boldsymbol{w} - \boldsymbol{y} ||_2^2
+                \end{align}
+                
+                where $n$ is the number of samples, $\hat{y}$ is the predicted value of the model and $y$ is the true target.
+                The prediction $\hat{y}$ is obtained by matrix multiplication between the input $\boldsymbol{X}$ and the weights of the model $\boldsymbol{w}$.
+                
+                Minimizing the $\text{MSE}$ can be achieved by solving the gradient of this equation equals zero in regards to the weights $\boldsymbol{w}$:
+                
+                \begin{align}
+                \nabla_{\boldsymbol{w}}\text{MSE} &= 0 \\
+                (\boldsymbol{X}^\top \boldsymbol{X})^{-1}\boldsymbol{X}^\top \boldsymbol{y} &= \boldsymbol{w} \label{eq:normaleq}
+                \end{align}
+                
+                The formula (\ref{eq:normaleq}) is known as the \textbf{normal equation}. It is used to find the weights of the linear regressor.
+                For more information on how to find $\boldsymbol{w}$ please visit the section "Linear Least Squares" of the following link:
+                
+                \url{https://en.wikipedia.org/wiki/Least_squares}
+                
+                \subsubsection{Polynomial Regression}
+                    We can leverage the linear by adding some new features.
+                    This technique is called \textbf{polynomial regression} and it is still considered as a linear regression because there is only linear learning parameters:
+                    \begin{equation}
+                        \boldsymbol{y} = \boldsymbol{w}_0 + \boldsymbol{X}\boldsymbol{w}_1 + \boldsymbol{X}^2\boldsymbol{w}_2 + \dots + \boldsymbol{X}^n\boldsymbol{w}_n
+                    \end{equation}
+                    As you have probably guessed, this equation is not linear. We use a trick to make it linear. We consider all the $\boldsymbol{X}^2$ to $\boldsymbol{X}^n$ as new features and we concatenate them to $\boldsymbol{X}$.
+                    All the $\boldsymbol{w}_1$ to $\boldsymbol{w}_n$ are concatenated to $\boldsymbol{w}_0$ as well.
+                    At the end, the polynomial regression has the same formula as the linear regression. We can find the stacked weights using (\ref{eq:normaleq}).
+                    
+            \subsection{Logistic Regression}
+                The prediction of a \textbf{logistic model} is as follow:
+                \begin{equation}
+                    \hat{y} = \sigma(\boldsymbol{X}\boldsymbol{w})
+                \end{equation}
+                Where $\sigma$ the sigmoid or logit function:
+                \begin{equation}
+                \sigma(\boldsymbol{x}) = \frac{1}{1 + \exp(-x)}
+                \end{equation}
+                The prediction $\hat{y}$ is obtained by matrix multiplication between the input $\boldsymbol{X}$ and the weights of the model $\boldsymbol{w}$ given as input to the logit function.
+                The sigmoid function is used here because it squashes the input in the $[0, 1]$ range suitable for describing a Bernouilli or Multinoulli distribution.
+                
+                It is important to note that the bias is included in $\boldsymbol{X}$ as a one value column.
+                
+                Logistic regression is used for classification. Training the model can be expressed as maximizing the likelihood of the observed data.
+                In other words, we want the predicted probability of our model to be as close as the true probability of the data.
+                In practice, maximizing the likelihood is equivalent to minimize the negative log likelihood:
+                \begin{equation}
+                    L(\boldsymbol{\theta}) = - \frac{1}{N}\sum_{i=1}^{n}\boldsymbol{y_i}\log(\hat{\boldsymbol{y}}_i)
+                \end{equation}
+                Dealing with a binary target, the binary cross entropy is appropriate as a loss function:
+                \begin{equation}
+                    L(\boldsymbol{\theta}) = - \frac{1}{N}\sum_{i=1}^{n}\boldsymbol{y_i}\log(\hat{\boldsymbol{y}}_i) + (1 - \boldsymbol{y_i})\log(1 - \hat{\boldsymbol{y}}_i)
+                \end{equation}
+                
+                A logistic regression model can be trained using gradient descent:
+                In the context of logistic regression, the gradient descent is as follow:
+                \begin{align}
+                    \nabla_{\boldsymbol{w}}\text{L(\boldsymbol{\theta})} &= \nabla_{\boldsymbol{w}}\left(-\frac{1}{N}\sum_{i=1}^{n}\boldsymbol{y_i}\log(\hat{\boldsymbol{y}}_i) + (1 - \boldsymbol{y_i})\log(1 - \hat{\boldsymbol{y}}_i)\right)\\
+                    &= \frac{1}{N}\boldsymbol{X}^\top(\sigma(\boldsymbol{X}\boldsymbol{w}) - \boldsymbol{y})
+                \end{align}
+                An explanation of how to find the gradient of the binary cross entropy is provided through this link:
+                
+                \url{https://www.youtube.com/watch?v=hWLdFMccpTY}
+                
+                \subsubsection{Polynomial Logistic Regression}
+                    We can add polynomial features to the logistic regressor.
+                    It is the same principle as the logistic regression except that $\boldsymbol{X}$ is the concatenation of $\{\boldsymbol{X}^1, \dots, \boldsymbol{X}^m\}$ where $m$ is the degree of the polynomial function and $\boldsymbol{w}$ is the concatenation of $\{\boldsymbol{w}_1, \dots, \boldsymbol{w}_m\}$ such as:
+                    \begin{equation}
+                        \boldsymbol{y} = \sigma(\boldsymbol{w}_0 + \boldsymbol{X}\boldsymbol{w}_1 + \boldsymbol{X}^2\boldsymbol{w}_2 + \dots + \boldsymbol{X}^m\boldsymbol{w}_m)
+                    \end{equation}
+                    The training method is the same as in the previous section but using the concatenated $\boldsymbol{X}$ and $\boldsymbol{w}$. 
+            
+            \subsection{K-Nearest Neighbors}
+        The \textbf{K-Nearest Neighbors} algorithm looks at the $K^{th}$ nearest samples of an input $\mathbf{x}$ and select the label most present in those samples:
+        \begin{align}
+            p(\mathbf{y} = c~|~\boldsymbol{\mathbf{x}}, D, K) &= \frac{1}{K} \sum_{i \in N_K(\boldsymbol{\mathbf{x}}, D)}\mathbb{I}(y_i = c)\\
+            \mathbb{I}(e) &=
+            \begin{cases}
+                1 & \text{if}~e~\text{is true}\\
+                0 & \text{otherwise}
+            \end{cases}
+        \end{align}
+        where $c$ is the class, $N_K$ are the closest sample of $\boldsymbol{\text{x}}$ in $D$.
+                    
+        \subsection{Naive Bayes Classifier}
+            Considering a vector of discrete values $\boldsymbol{x} \in \{1, \dots, K\}^D$, where $K$ is the number of samples and $D$ the number of features.
+            The \textbf{naive bayes classifier} assumes that the data is conditionally independant given the class label i.e $p(\boldsymbol{x}|y=c)$.
+            This assumption allows us to write the class conditional density as a product:
+            \begin{equation}
+                p(\boldsymbol{x} | y = c, \boldsymbol{\theta}) = \prod_{i=1}^{K}p(x_i | y_i = c, \boldsymbol{\theta}_{ic})
+            \end{equation}
+            The model is called “naive” since we do not expect the features to be independent, even conditional on the class label.
+            
+            The form of the class-conditional density depends on the type of each feature. We give some possibilities below:
+            \begin{itemize}
+                \item For real values, we can use the Gaussian distribution:
+                \begin{equation}
+                    p(\boldsymbol{x} | y = c, \boldsymbol{\theta}) = \prod_{i=1}^{D} \mathcal{N}(x_i| \mu_{ic}, \sigma_{ic}^2)
+                \end{equation}
+                \item For binary values, we can use a Bernouilli distribution, where $\mu_{ic}$ is the probability that feature $i$ occurs in class $c$:
+                \begin{equation}
+                    p(\boldsymbol{x} | y = c, \boldsymbol{\theta}) = \prod_{i=1}^{D} \text{Ber}(x_i | \mu_{ic}) 
+                \end{equation}
+                \item For categorical features, we can use a Multinouilli distribution, where $\boldsymbol{\mu}_{ic}$ is an histogram over the possible values for $x_i$ in class $c$:
+                \begin{equation}
+                    p(\boldsymbol{x} | y = c, \boldsymbol{\theta}) = \prod_{i=1}^{D}\text{Cat}(x_i | \boldsymbol{\mu}_{ic})
+                \end{equation}
+                
+            \end{itemize}
+    
+        \subsection{Decision Trees}
+            \textbf{Decision trees} are defined by recursively partitioning the input space into regions. Each region is partitioned into sub-regions for each child node.
+            Each leaf node maps the point to a class or regression value depending on the task. Space is sub-divided into non overlapping regions based on some criteria at each node. Once created, a tree can be navigated with a new sample of data following each branch with the splits until a final prediction is made. Decision trees can be use for either classification or regression, we will cover both cases in the next sections.
+            
+            \subsubsection{Classification Trees}
+                To understand how to grow a tree regarding classification, we must introduce the \textbf{gini index} first.
+                
+                Assuming that $D$ is the data in a leaf and $N$ the number of samples in $D$, we estimate the class-conditional probability as follow:
+                \begin{equation}
+                    \hat{\pi}_c = \frac{1}{N} \sum_{i \in D}\mathbb{I}(y_i = c)
+                \end{equation}
+                where $c$ are the classes of the target. The Gini index of a given leaf is:
+                \begin{equation}
+                    G_{l} = \sum_{c=1}^{C}\hat{\pi}_c(1 -\hat{\pi}_c) = 1 - \sum_{c=1}^{C}\hat{\pi}^2_c
+                \end{equation}
+                To have the Gini index of a split, we compute the Gini index on each of its leaves and sum the indexes weighted by the number of samples in each leaf over the total number of samples to split:
+                \begin{equation}
+                    G_{Node} = \sum_{i=1}^{K} \frac{k_{li}}{U}G_{li}
+                \end{equation}
+                where $K$ is the number of leaves of the node, $k_{li}$ is the number of samples in the leaf $i^{th}$ leaf and $U$ is the number of sample to split.
+                
+                In the case of categorical inputs, the most common approach is to consider splits of the form $x_{ij} = c_k$ and $x_{ij} \neq c_k$, for each possible class label $c_k$.
+                The rule to perform a split on a node is as follow:
+                \begin{itemize}
+                    \item if the node is in the maximum depth of the tree, keep it as a leaf.
+                    \item for each attribute, we try all the possible thresholds and compute the Gini index of each split. The threshold across all attributes that minimize the Gini index is selected
+                    \item a node is said pure if the split generates a empty leaf. If a node is pure, it is set as a leaf.
+                    \item if the node has a lowest score than the Gini index of the best split, we keep it as a leaf.
+                    \item if the Gini index of a leaf is lower than the Gini index of the potential split at this leaf, we will keep it as a a leaf node.
+                \end{itemize}
+                
+            \subsubsection{Regression Trees}
+                The only difference when building a decision tree for a regression task, is that when we split a node, instead of using the gini index, we use an appropriate cost function like mean square error. In fact, we split the node using the same rules as above, compute the average value of the target among for both subset. Than, we compute the mean square error between the average value and the true value of the samples. The separation that has the lowest weighted MSE on the subset sizes is choosen for the split.
+                
+                Predicting on a regression tree consists of following the path along the tree in consideration of the criterias at each node and to return the average target value of the leaf.
+            
+        \subsection{Random Forest}
+            \textbf{Random forest} is a technique known as bootstrap aggregating or bagging which consists in taking multiple different models and compute the ensemble prediction:
+            \begin{equation}
+                f(\boldsymbol{x}) = \sum_{i = 0}^{M}f_m(\boldsymbol{x})
+            \end{equation}
+            where $f_m$ is the $m^{th}$ model.
+            The random forest technique is the ensemble model making use of decision trees. The ensemble model tries to decorrelate the base
+            learners by learning trees based on a randomly chosen subset of features, as well as a randomly chosen subset of data samples.
+
+            In other words, the random forest training consists in creating $m$ subsets of the training set and allowing to select multiple times the same samples. These subsets are known as boostrapped datasets. Finally, each base learner is trained in the same fashion as a decision tree except that at each node, when we perform the split, we randomly choose a fixed number of features from the data.
+            
+            Using a random forest is a great way to deal with the tendency of the decision trees to overfit. However, as the model is getting more complex due to aggregation of multiple learners, it is more challenging to interpret a random forest model.
+            
+        \subsection{Boosting}
+            \textbf{Boosting} is an algorithm using multiple weak learners. A weak learner is defined to be slightly better than random guessing. The most common weak learner is known as a  \textbf{stamp}. A stamp is an univariate tree with only one split. The purpose of boosting is to sequentially apply the weak classification algorithm to repeatedly modified versions of the data.
+            
+            The predictions from the weak learners are combined through a weighted majority vote:
+            
+            \begin{equation}
+                f(\boldsymbol{x}) = \text{sign}\left(\sum_{m=1}^{M}\alpha_m f_m(\boldsymbol{x})\right)
+            \end{equation}
+            
+            where $f(\boldsymbol{x})$ is the prediction of the final model, $f_m(\boldsymbol{x})$ is the prediction of the weak learner $m$ and $\{\alpha_1, \dots, \alpha_M\}$ are the weights computed by the boosting algorithm. Their effect is to give higher influence to the more accurate 
+            learners. This formula represent the prediction in case of a binary classification $\{-1, 1\}$
+                        
+            The data modification consists of applying weights $\{\boldsymbol{w_1}, \dots, \boldsymbol{w_N}\}$ to each training samples. Initially the weights are set to $\frac{1}{N}$ where $N$ is the number of samples. at iteration $k$, we perform a data transformation using the weights on each training samples. We fit the data into the model and the samples that were misclassified by the learner $f_{k-1}$ have their weights increased while the samples that were well classified by $f_{k-1}$ have their weights decreased. The importance of the harder samples sequentially increase and the learners are forced to concentrate on the observation that are missed on the previous iterations.
+            
+            \textbf{AdaBoost}, short for Adaptative Boosting, is the first boosting technique that got popular for being able to adapt to the weak learners.
+            In this algorithm, after fitting the weak learner $m$, we compute the weighted error:
+            
+            \begin{equation}
+                \text{err}_m = \frac{1}{N}\sum_{i=1}^{N}w_i I\left(y_i \neq f_m(\boldsymbol{x_i})\right)
+            \end{equation}
+            
+            Then we set the weights of the model in the final prediction based on its performance:
+            
+            \begin{equation}
+                \alpha_m = \log\left(\frac{1 - \text{err}_m}{\text{err}_m}\right)
+            \end{equation}
+            
+            Finally, we update the weights of each samples as follow:
+            
+            \begin{align}
+                w_i &= w_i * \exp(\alpha_m I\left(y_i \neq f_m(\boldsymbol{x}_i)\right)\\
+                w_i &= w_i * \exp(-\alpha_m I\left(y_i = f_m(\boldsymbol{x}_i)\right)
+            \end{align}
+            
+            The importance of the weak learner's weight is proportional to its performance during training.
+            In fact, if $err_m$ is low then $\alpha_m$ is high and the values of the sample weights $w_1, \dots, w_N$ get modified by a higher margin.
+            The misclassified samples are scaled up and the well classified samples are scaled down so that the learner will focus on the weakness of the previous one.
+            
+            Inside the stamps, the splits are selected according to the weighted gini split:
+            
+            \begin{align}
+                \hat{\pi}_c &= \frac{1}{\sum_{i=1}^{N}w_i} \sum_{i \in D}w_i\mathbb{I}(y_i = c)\\
+                \text{G} &= 1 - \sum_{c=1}^{C}\hat{\pi}^2_c
+            \end{align}
+            
+            Here the samples with high weights contribute more to the gini index than the lower ones.
+            
+            Decision Trees are very prized by the machine learning community for their interpretability and their handy automatic feature selection. Unfortunately, the decision trees tend to overfit. It is mandatory to limit the max depth parameter to avoid this behavior. Using the ensemble technique is a great way to deal with the tendency of the decision trees to overfit. However, as the model is getting more complex due to aggregation of multiple learners, it is more challenging to interpret a random forest model.
+            
+    \section{Unsupervised Algorithms}
+        \subsection{Expectation Maximization}
+            The EM algorithm is a general technique for finding maximum likelihood solutions for probabilistic models having latent variables. EM is an iterative algorithm that starts from an initial estimate of the parameters of a probabilistic model $\boldsymbol{\theta}$ and then proceeds to iteratively update $\boldsymbol{\theta}$ until convergence. This algorithm consists of a expectation step and a maximization step.
+            
+            Let's consider the EM algorithm for a multivariate \textbf{gaussian mixture} model with $K$ mixture components, observed variables $\boldsymbol{X}$ and latent variables $\boldsymbol{Z}$ such as:
+            \begin{align}
+                P(\boldsymbol{x}_i | \boldsymbol{\theta}) &= \pi_k P(\boldsymbol{x}_i | \boldsymbol{z}_i, \boldsymbol{\theta}_k)\\
+                &= \sum_{k=1}^{K} P(\boldsymbol{z}_i = k) \mathcal{N}(\boldsymbol{x}_i; \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)
+            \end{align}
+            
+            Let's see why the MLE of a gaussian mixture model is hard to compute. The likelihood of a gaussian mixture distribution is:
+            \begin{equation}
+                L(\boldsymbol{\theta} | \boldsymbol{X}) = \prod_{i=1}^N\sum_{k=1}^{K} \pi_k \mathcal{N}(\boldsymbol{x}_i; \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)
+            \end{equation}
+            This the log-likelihood is as follows:
+            \begin{equation}
+                \mathcal{L}(\boldsymbol{\theta} | \boldsymbol{X}) = \sum_{i=1}^N \log\left(\sum_{k=1}^{K} \pi_k \mathcal{N}(\boldsymbol{x}_i; \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)\right)
+            \end{equation}
+            Because of the sum inside the $\log$, we cannot estimate $\boldsymbol{\mu}_k$ and $\boldsymbol{\sigma^2}$ without knowing $\boldsymbol{Z}$. That is why we would use EM in this kind of situation.
+            
+            The EM algorithm has two steps, the expectation step known as E-step, assigns to each data point the probability that they belong to each
+            components of the mixture model. Whereas the maximization step, known as M-step, re-evaluate the parameters of each mixture component based on the estimated values generated in the E-step.
+            
+            More formally, during the E-step, we calculate the likelihood of each data point using the estimated parameters:
+            \begin{equation}
+                f(\boldsymbol{x_i}|\mu_k, \boldsymbol{\Sigma}_k) = \frac{1}{\sqrt{(2\pi)^k|\boldsymbol{\Sigma}_k|}} \exp\left(-\frac{(\boldsymbol{x}_i - \boldsymbol{\mu}_k)^\top \boldsymbol{\Sigma}_k^{-1}(\boldsymbol{x}_i - \boldsymbol{\mu}_k)}{2}\right)
+            \end{equation}
+            Then we compute the probability that $\boldsymbol{x}_i$ came from the $k^th$ gaussian distribution:
+            \begin{equation}
+                p_{ik} = \frac{\pi_k f(\boldsymbol{x_i}|\mu_k, \boldsymbol{\Sigma}_k)}{\sum_{j=1}^{K} \pi_j f(\boldsymbol{x_i}|\mu_j, \boldsymbol{\Sigma}_j)}
+            \end{equation}
+            
+            For the M-step, we update the parameters of the mixture as follows:
+            \begin{align}
+                \pi_k &= \frac{1}{N}\sum_{i=1}^{N} p_{ik}\\
+                \boldsymbol{\mu}_k &= \frac{1}{\sum_{i=1}^{N} p_{ik}} \sum_{i=1}^{N} p_{} \boldsymbol{x_i}\\
+                \boldsymbol{\Sigma}_k &= \frac{1}{\sum_{i=1}^{N} p_{ik}} \sum_{i=1}^{N} p_{ik} (\boldsymbol{x}_i - \boldsymbol{\mu}_k) (\boldsymbol{x}_i - \boldsymbol{\mu}_k)^\top
+            \end{align}
+            
+    
+        \subsection{K-Means Clustering}
+            \textbf{K-means} algorithm is an iterative approach that tries to partition a dataset into $K$ predefined clusters where each data point belongs to only one cluster. 
+            
+            This algorithm works that way:
+            \begin{itemize}
+                \item specify number of clusters $K$
+                \item randomly initialize one centroid in space for each cluster
+                \item for each point, compute the euclidean distance between the point and each centroid and assign the point to the closest centroid
+                \item change the centroid value based on the points present in each cluster and repeat the previous step until the centroid does not change anymore
+            \end{itemize}
+            
+            The approach, K-means follows to solve this problem is called Expectation-Maximization discussed in the previous section. The E-step assign each point to a cluster, and the M-step refines the value of centroid based on the points inside each cluster.
+            
+            More formally, the objective function to minimize is as follows:
+            \begin{equation}
+                J = \sum_{i=1}^{m} \sum_{k=1}^{K} \mathbb{I}(z_i = k)||x_i - \mu_k||_2^2
+            \end{equation}
+            where $z_i$ is the cluster assigned to $x_i$ and $\mu_k$ is the mean of the cluster $k$.
+            
+            The E-step is defined as:
+            \begin{equation}
+                z_i^{*} = \argmin_{k} ||x_i - \mu_k||_2^2
+            \end{equation}
+            
+            And the M-step is defined as:
+            \begin{equation}
+                \mu_k = \frac{1}{\sum_{i=1}^m \mathbb{I}(z_i = k)} \sum_{i=1}^m  x_i\mathbb{I}(z_i = k)
+            \end{equation}
+            
+            In practice, we should run multiple K-means with different initialization of the centroids and keep the parameters that minimized $J$.
+
+            Since K-means is a distance based algorithm, is it mandatory to standardize the data. 
+            
+            
+            
+\chapter{Exploratory Data Analysis}
+    \textbf{Exploratory data analysis} consist of improving a dataset for training by extracting important variables and discarding useless ones, identifying outliers, human error or missing values, understand the relationship, or lack, between variables and maximizing your insight of a dataset and minimizing error for training.
+    
+    
+    \section{Feature Selection}
+        Feature selection techniques:
+        \begin{itemize}
+            \item A feature has a very low variance is likely not relevant for training because a close to constant value has no use for a model.
+            \item Two feature that are highly correlated are redundant.
+            \item Drop features that have very low correlation with the target.
+            \item Forward selection: train on the best feature and add the next best feature and check the performance.
+            \item Backward elimination: train on one feature and iteratively discard the worse feature.
+        \end{itemize}
+    
+        \subsection{Significance Level and P-Value}
+            \subsubsection{Definition}
+                \textbf{Null hypothesis} $H_0$ is a general statement that there is no relationship between two measured phenomena. The \textbf{p-value} is the probability of getting the observed value of the test statistic, or a value with greater evidence against $H_0$, if $H_0$ is true.
+                
+                In other words, the p-value is a measure of the strengh of the evidence against $H_0$. The p-value calculation is as follow:
+                \begin{align}
+                    H_0 : p &= c\\
+                    z = \frac{\hat{p} - p}{\frac{\sigma}{\sqrt{n}}} &= z_0 \\
+                    \text{pvalue} &= P(z \geq z_0)
+                \end{align}
+                where $\hat{p}$ is the proportion of the population that has a given characteristic, $p$ is the probability of the hypothesis $H_0$, $\sigma$ is the standard deviation of $H_0$ and $n$ is the number of samples in the population.
+            
+                In practice, if the p-value is greater than the \textbf{significance level}, usually 0.05, the given feature is not useful for the training task.
+           \subsubsection{Example}
+                The mayer of a town saw an article saying that the national unemployment is 8\%. They wonder if it is true in their town of 200 residents to test $H_0 : p = 0.08$ and $H_a : p \neq 0.08$. They found at that $\hat{p} = 0.11$ is the observed unemployment rate in their population.
+                
+                Assuming $H_0$ is true, what is the probability of getting a result $\hat{p}$ far away or further from $p$ ? How many standard deviation away from the true proportion $\hat{p}$ is the assumed proportion $p$ ? We can use a $z$ statistic to do this. Assuming the result of the statistic is $z_0$, the p-value is $\text{pvalue} = P(z \geq z_0)$. Because $z$ is assumed to be a  normal distribution we can get the p-value from the standard normal probabilities.
+                
+                If the p-value is greater than the significance level 0.05, than we can reject $H_0$.
+        %A figure1
+        %begin{figure}[ht]
+        %    \centering
+        %    \includegraphics[width=1\textwidth]{engie_lab.png}
+        %    \caption{Example of human \gls{re-id} data labeling task}
+        %\end{figure}
+        %
+        %Formula in line $\displaystyle \mathbf{w} \cdot \mathbf{x}$.
+        %Formula with caption
+        
+        %\begin{equation}
+        %H[n]=\begin{cases} 0, & n < 0, \\ 1, & n \ge 0, \end{cases}
+        %\end{equation}
+        %\subsection{Sub Section 1}\label{subsec1}
+        %    %A glossary entry \gls{MLP}.
+        %    %Two figures side by side.
+        %    \begin{figure}[ht]
+        %    \centering
+        %    \begin{minipage}{.5\textwidth}
+        %        \centering
+        %        \includegraphics[width=1\textwidth]{epita_logo.png}
+        %        \captionof{figure}{Convolution of stride 1}
+        %        \label{fig:convstrideone}
+        %    \end{minipage}%
+        %    \begin{minipage}{.5\textwidth}
+        %        \centering
+        %        \includegraphics[width=1\textwidth]{engie_lab.png}
+        %        \captionof{figure}{Convolution of stride 2}
+        %        \label{fig:convstridetwo}
+        %    \end{minipage}
+        %    \end{figure}
+        %    
+        %    Itemize:
+        %    \begin{itemize}
+        %        \item Convolution layer for analyzing pattern in the image.
+        %        \item Max Pooling layer to reduce the dimension of the input.
+        %        \item Fully Connected layer to detect global configurations of the features extracted by the convolution layers.
+        %        \item Softmax layer for classification.
+        %    \end{itemize}
+        %    
+        %    Referencing the above Figure~\ref{fig:tripletnetwork}.
+        %    \begin{figure}[ht]
+        %        \centering
+        %        \includegraphics[width=0.5\textwidth]{epita_logo.png}
+        %        \caption{Offline Triplet Mining Schema.}
+        %        \label{fig:tripletnetwork}
+        %    \end{figure}
+        %    
+        %    Complex formula:
+        %    \begin{equation}
+        %    %\scalebox{1.00}{
+        %        \begin{gathered}
+        %            \displaystyle{w _ { i } ^ { + } = \left( d \left( \boldsymbol { f } _ { a }, \boldsymbol { f } _ { i } \right) + 1\right) ^ { \alpha }
+        %            \quad ~~~~\text { if } \boldsymbol { f } _ { i } \in \boldsymbol { S } _ { a } ^ { + },} \\
+        %            \displaystyle{w _ { j } ^ { - } = \left( d \left( \boldsymbol { f } _ { a } , \boldsymbol { f } _ { j } \right) + 1 \right) ^ { - 2 \alpha } \quad \text { if } \boldsymbol { f } _ { j } \in \boldsymbol { S } _ { a } ^ { - }}
+        %        \end{gathered}%}
+        %        \label{eq:batchhard}
+        %    \end{equation}
+        %    
+        %    A nice table:
+        %    \begin{figure}[ht]
+        %        \centering
+        %        \noindent\resizebox{\textwidth}{!}{%
+        %        \begin{tabular}{|| l | c | c | c | l | c ||}
+        %            \hline
+        %            Method & mAP (\%) & Rank-1 & Rank-5 & Model & Year\\
+        %            \hline
+        %            \hline
+        %            FACT+Plate+SNN+STR  & 27.77 & 61.44 & 78.78 & None & 2015 \\
+        %            \hline
+        %            OIFE-4-Views & 48.00 & 89.43 & ? & Custom & 2017 \\
+        %            \hline
+        %            VAMI & 50.13 & 77.03 & 90.82 & Custom & 2018 \\
+        %            \hline
+        %            Siamese-CNN+Path-LSTM  & 58.27 & 83.49 & 90.04 & RN50+LSTM & 2017 \\
+        %            \hline
+        %            Semihard+softmax+AIC  & 57.43 & 86.29 & 94.39 & RN50 & 2018\\
+        %            \hline
+        %            GAN+LSRO & 58.23 & 87.70 & 93.92 & RN50+DCGAN & 2018 \\
+        %            \hline
+        %            RAM-Multi-Learners  & 61.50 & 88.60 & 94.00 & VGG19x4 & 2018 \\
+        %            \Xhline{4\arrayrulewidth}
+        %            Baseline  ~~~~~~~~~~~~~~~~~($\boldsymbol{Ours}$)& 53.78 & 81.46 & 91.47 & RN50 & 2018\\
+        %            \hline
+        %            Hap2s+softmax \cite{spacetimeprior}+ ($\boldsymbol{Ours}$) & 56.85 & 84.80 & 92.43 & RN50 & 2018\\
+        %            \hline
+        %        \end{tabular}}
+        %        \captionof{table}{Comparison with the related works on VeRi-776 }\label{fig:scores}
+        %    \end{figure}
+% - Limitation
+\printglossaries
+
+\bibliographystyle{plain}
+\bibliography{biblist}
+\end{document}
