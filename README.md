@@ -10,10 +10,11 @@ A simple way to compile the latex file and render the pdf is to first install th
 ```bash
 sudo apt install texlive-latex-extra
 sudo apt install texlive-science
+sudo apt install python-pygments
 ```
 And then run the following line:
 ```bash
-pdflatex --shell-escape main.tex
+pdflatex -shell-escape main.tex
 ```
 
 ## Document
