@@ -601,6 +601,13 @@
         
         \textbf{Supervised learning} algorithms experience a dataset containing features, but each example is also associated with a label or target.
         
+    \section{Bias Variance Trade-off}
+        In statistics and machine learning, the \textbf{bias–variance tradeoff} is the property of a set of predictive models whereby models with a lower bias in parameter estimation have a higher variance of the parameter estimates across samples, and vice versa. The bias–variance dilemma or bias–variance problem is the conflict in trying to simultaneously minimize these two sources of error that prevent supervised learning algorithms from generalizing beyond their training set:
+        \begin{itemize}
+            \item The bias error is an error from erroneous assumptions in the learning algorithm. High bias can cause an algorithm to miss the relevant relations between features and target outputs (underfitting).
+            \item The variance is an error from sensitivity to small fluctuations in the training set. High variance can cause an algorithm to model the random noise in the training data, rather than the intended outputs (overfitting).
+        \end{itemize}
+        
     \section{Discriminative and Generative models}
         A \textbf{discriminative} model models the decision boundary between the classes. A \textbf{generative} model explicitly models the actual distribution of each class. In final both of them is predicting the conditional probability P(class | features). But Both models learn different probabilities.
         A Generative Model learns the joint probability distribution p(x,y). It predicts the conditional probability with the help of Bayes Theorem. A Discriminative model learns the conditional probability distribution $p(y|x)$.
@@ -903,7 +910,8 @@
         \end{align}
         There is a multitude of different kernels like:
         \begin{align}
-            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \exp\left(-\frac{|| \boldsymbol{x} -  \boldsymbol{x^{'}} ||^2}{2\sigma^{2}}\right) \qquad \textbf{kernel RBF} \\
+            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \phi (\boldsymbol{x})^\top \phi(\boldsymbol{x}^{'}) && \textbf{linear kernel} \\
+            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \exp\left(-\frac{|| \boldsymbol{x} -  \boldsymbol{x^{'}} ||^2}{2\sigma^{2}}\right) && \textbf{kernel RBF} \\
         \end{align}
             
     \section{Unsupervised Algorithms}
