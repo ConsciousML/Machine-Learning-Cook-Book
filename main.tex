@@ -894,6 +894,14 @@
             
             Decision Trees are very prized by the machine learning community for their interpretability and their handy automatic feature selection. Unfortunately, the decision trees tend to overfit. It is mandatory to limit the max depth parameter to avoid this behavior. Using the ensemble technique is a great way to deal with the tendency of the decision trees to overfit. However, as the model is getting more complex due to aggregation of multiple learners, it is more challenging to interpret a random forest model.
             
+    \subsection{Support Vector Machine}
+        A \textbf{kernel function} is a function such as:
+        \begin{align}
+            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &\in \mathbb{R} \\
+            \kappa(\boldsymbol{x}, \boldsymbol{x}^{'}) &= \kappa(\boldsymbol{x}^{'}, \boldsymbol{x}) \\
+            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &\geq 0 \\
+        \end{align}
+            
     \section{Unsupervised Algorithms}
         \subsection{Expectation Maximization}
             The EM algorithm is a general technique for finding maximum likelihood solutions for probabilistic models having latent variables. EM is an iterative algorithm that starts from an initial estimate of the parameters of a probabilistic model $\boldsymbol{\theta}$ and then proceeds to iteratively update $\boldsymbol{\theta}$ until convergence. This algorithm consists of a expectation step and a maximization step.
