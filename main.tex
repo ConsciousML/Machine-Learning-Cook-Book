@@ -910,7 +910,8 @@
         \end{align}
         There is a multitude of different kernels like:
         \begin{align}
-            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \phi (\boldsymbol{x})^\top \phi(\boldsymbol{x}^{'}) && \textbf{linear kernel} \\
+            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \boldsymbol{x})^\top \boldsymbol{x}^{'} && \textbf{linear kernel} \\
+            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \left(\boldsymbol{x}^\top \boldsymbol{x^{'}} + 1\right)^p && \textbf{polynomial kernel} \\
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \exp\left(-\frac{|| \boldsymbol{x} -  \boldsymbol{x^{'}} ||^2}{2\sigma^{2}}\right) && \textbf{kernel RBF} \\
         \end{align}
             
