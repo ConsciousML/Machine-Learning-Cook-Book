@@ -372,11 +372,14 @@
     \end{equation}
      The Jacobian matrix represents the differential of $f$ at every point where $f$ is differentiable. At each point, the Jacobian matrix can be thought of as describing the amount of stretching, rotating or transforming that the function impose locally near that point.
      
-    \section{Taylor Series}
-    The \textbf{Taylor series} allows us to approximate a function into a $n$ degree polynomial function at a given point $x_0$:
+    \section{Taylor Series Expansion}
+    The \textbf{Taylor series expansion} allows us to approximate a function into a $n$ degree polynomial function at a given point $x_0$:
     \begin{equation}
         f(x) = \sum_{n = 0}^{\infty}{\frac{f^{(n)}(x_0)}{n!}(x - x_0)^n}
     \end{equation}
+    where $x_0$ is any value as long as $f(x_0)$ exists.
+    The Taylor series expansion approximates a function into an infinite sum.
+    
 \chapter{Probability and Information Theory}
     \section{Random Variable}
     A \textbf{random variable} is a variable that can take on different values randomly.
@@ -902,7 +905,7 @@
             Decision Trees are very prized by the machine learning community for their interpretability and their handy automatic feature selection. Unfortunately, the decision trees tend to overfit. It is mandatory to limit the max depth parameter to avoid this behavior. Using the ensemble technique is a great way to deal with the tendency of the decision trees to overfit. However, as the model is getting more complex due to aggregation of multiple learners, it is more challenging to interpret a random forest model.
             
     \subsection{Support Vector Machine}
-        A \textbf{kernel function} $\kappa(\boldsymbol{x}, \boldsymbol{x^{'}})$ is a measure of similarity between two objects $\boldsymbol{x}, \boldsymbol{x^{'}} \in \chi$ where $\chi$ is an abstract space. The kernel function is such as:
+        A \textbf{kernel function} $\kappa(\boldsymbol{x}, \boldsymbol{x^{'}})$ is a measure of similarity between two objects $\boldsymbol{x}, \boldsymbol{x^{'}} \in \chi$ where $\chi$ is an abstract space of higher dimension. The kernel function is such as:
         \begin{align}
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &\in \mathbb{R} \\
             \kappa(\boldsymbol{x}, \boldsymbol{x}^{'}) &= \kappa(\boldsymbol{x}^{'}, \boldsymbol{x}) \\
