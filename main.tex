@@ -194,7 +194,6 @@
         \end{equation}
         A vector $\boldsymbol{x}$ and a vector $\boldsymbol{y}$ are orthogonal to each other if $\boldsymbol{x}^\top \boldsymbol{y} = 0$.
         Two vectors are \textbf{orthonormal} if they have unit norm and are orthogonal.
-        \newpage
         An \textbf{orthogonal matrix} is a squared matrix whose rows and columns are mutually orthogonal:
         \begin{align}
             \boldsymbol{A}^\top \boldsymbol{A} = \boldsymbol{A}\boldsymbol{A}^\top &= \boldsymbol{I} \\
@@ -919,7 +918,7 @@
         \end{align}
         There is a multitude of different kernels like:
         \begin{align}
-            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \boldsymbol{x})^\top \boldsymbol{x}^{'} && \textbf{linear kernel} \\
+            \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \boldsymbol{x}^\top \boldsymbol{x}^{'} && \textbf{linear kernel} \\
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \left(\boldsymbol{x}^\top \boldsymbol{x^{'}} + r\right)^d && \textbf{polynomial kernel} \\
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \exp\left(-\frac{|| \boldsymbol{x} -  \boldsymbol{x^{'}} ||^2}{2\sigma^{2}}\right) && \textbf{kernel RBF} \\
         \end{align}
