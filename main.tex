@@ -910,7 +910,11 @@
             Decision Trees are very prized by the machine learning community for their interpretability and their handy automatic feature selection. Unfortunately, the decision trees tend to overfit. It is mandatory to limit the max depth parameter to avoid this behavior. Using the ensemble technique is a great way to deal with the tendency of the decision trees to overfit. However, as the model is getting more complex due to aggregation of multiple learners, it is more challenging to interpret a random forest model.
             
     \subsection{Support Vector Machine}
-        A \textbf{kernel function} $\kappa(\boldsymbol{x}, \boldsymbol{x^{'}})$ is a measure of similarity between two objects $\boldsymbol{x}, \boldsymbol{x^{'}} \in \chi$ where $\chi$ is an abstract space of higher dimension. The kernel function is such as:
+        A \textbf{kernel function} $\kappa(\boldsymbol{x}, \boldsymbol{x^{'}})$ is a measure of similarity between two objects $\boldsymbol{x}, \boldsymbol{x^{'}} \in \chi$ where $\chi$ is an abstract space of higher dimension. 
+        
+        The \textbf{kernel trick} method stands for calculating the relationship of data in higher dimension without transforming the data in higher dimension. The kernel trick reduces the amount of computation required for \textbf{support vector machines} (SVM) by avoiding data transformation.
+        
+        The kernel function is such as:
         \begin{align}
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &\in \mathbb{R} \\
             \kappa(\boldsymbol{x}, \boldsymbol{x}^{'}) &= \kappa(\boldsymbol{x}^{'}, \boldsymbol{x}) \\
@@ -923,8 +927,12 @@
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \exp\left(-\frac{|| \boldsymbol{x} -  \boldsymbol{x^{'}} ||^2}{2\sigma^{2}}\right) && \textbf{kernel RBF} \\
         \end{align}
         where $r$ is the coefficient of the polynomial and $d$ its degree, while $\sigma$ is known as the bandwith of the \textbf{radial basis function} (RBF).
+        
+        The gram matrix of a kernel is defined as:
+        \begin{equation}
+            \boldsymbol{K}_ij = \kappa(
+        \end{equation}
             
-        The \textbf{kernel trick} method stands for calculating the relationship of data in higher dimension without transforming the data in higher dimension. The kernel trick reduces the amount of computation required for \textbf{support vector machines} (SVM) by avoiding data transformation.
         
     \section{Unsupervised Algorithms}. 
         \subsection{Expectation Maximization}
