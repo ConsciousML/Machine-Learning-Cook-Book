@@ -200,6 +200,11 @@
             \boldsymbol{A}^\top \boldsymbol{A} = \boldsymbol{A}\boldsymbol{A}^\top &= \boldsymbol{I} \\
             \boldsymbol{A}^\top &= \boldsymbol{A}^{-1}
         \end{align}
+        
+        The \textbf{Gram matrix} is defined as the pair-wise dot product of a set of vectors $\{\boldsymbol{v}_0 \dots \boldsymbol{v}_n\}$ such as:
+        \begin{equation}
+            G(\boldsymbol{v}_0 \dots \boldsymbol{v}_n)_{ij} =  \langle\boldsymbol{v}_i, \boldsymbol{v}_j\rangle
+        \end{equation}
 
     \section{QR Decomposition}
         The \textbf{QR decomposition} is a decomposition of a matrix $\boldsymbol{A}$ into a product $\boldsymbol{A} = \boldsymbol{Q}\boldsymbol{R}$ of an orthogonal matrix $\boldsymbol{Q}$ and an upper triangular matrix $\boldsymbol{R}$. It is often used to solve linear least square problems.
