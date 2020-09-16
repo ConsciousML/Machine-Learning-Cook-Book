@@ -920,6 +920,21 @@
         \end{equation}
         where $\phi(\boldsymbol{x})$ is a function that applies a transformation to map the input into a higher dimensional space.
         
+        As long as there is some higher dimensional space in which $\phi$ is the dot product of that higher dimensional space, then $\kappa(\boldsymbol{x}, \boldsymbol{x}^{'})$ is just the dot product of $\phi$.
+        
+        More formally, a kernel can be defined as a dot product if it satisfies the requirement that the Gram matrix
+        \begin{equation}
+            \boldsymbol{K}_{ij} = \kappa(\boldsymbol{x}_i, \boldsymbol{x}^{'}_j)
+        \end{equation}
+        is positive definite for any set of input $\{\boldsymbol{x}_i\}_{i=1}^{n}$. Such a kernel is called a \textbf{Mercer kernel}. The importance of Mercer kernels lies in the \textbf{Mercer's theorem}: if the Gram matrix of a kernel is positive definite, we can compute an eigen vector decomposition as:
+        \begin{equation}
+            \boldsymbol{K} = \boldsymbol{Q}^\top \boldsymbol{\Lambda} \boldsymbol{Q}
+        \end{equation}
+        where $\boldsymbol{\Lambda}$ contains the eigenvalues in its diagonal and $\boldsymbol{Q}$ contains the eigenvectors in its columns. An element of $\boldsymbol{K}$ can be defined as:
+        \begin{equation}
+            k_{ij} = (\boldsymbol{\Lambda}^{\frac{1}{2}}\boldsymbol{Q}_{:,i})^\top (\boldsymbol{\Lambda}^{\frac{1}{2}}\boldsymbol{Q}_{:,j})
+        \end{equation}
+        
         The kernel function is such as:
         \begin{align}
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &\in \mathbb{R} \\
