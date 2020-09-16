@@ -934,6 +934,15 @@
         \begin{equation}
             k_{ij} = (\boldsymbol{\Lambda}^{\frac{1}{2}}\boldsymbol{Q}_{:,i})^\top (\boldsymbol{\Lambda}^{\frac{1}{2}}\boldsymbol{Q}_{:,j})
         \end{equation}
+        By defining $\phi(\boldsymbol{x}_i = (\boldsymbol{\Lambda}^{\frac{1}{2}}\boldsymbol{Q}_{:,i})$ then we can write:
+        \begin{align}
+            k_{ij} = \phi(\boldsymbol{x}_i)^\top \phi(\boldsymbol{x}_j)
+        \end{align}
+        
+        All the entries of the kernel matrix can be computed by performing an inner product of some feature vector. So if the kernel is Mercer, it exists a function $\phi$ mapping $\boldsymbol{x} \in \chi$ to $\mathbb{R}^D$ such that:
+        \begin{equation}
+            \kappa(\boldsymbol{x}, \boldsymbol{x}^{'}) = \phi(\boldsymbol{x})^\top \phi(\boldsymbol{x}^{'})
+        \end{equation}
         
         The kernel function is such as:
         \begin{align}
@@ -948,12 +957,6 @@
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &= \exp\left(-\frac{|| \boldsymbol{x} -  \boldsymbol{x^{'}} ||^2}{2\sigma^{2}}\right) && \textbf{kernel RBF} \\
         \end{align}
         where $r$ is the coefficient of the polynomial and $d$ its degree, while $\sigma$ is known as the bandwith of the \textbf{radial basis function} (RBF).
-        
-        The gram matrix of a kernel is defined as:
-        \begin{equation}
-            \boldsymbol{K}_ij = \kappa(
-        \end{equation}
-            
         
     \section{Unsupervised Algorithms}. 
         \subsection{Expectation Maximization}
