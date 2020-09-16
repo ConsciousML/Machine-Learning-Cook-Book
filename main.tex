@@ -914,6 +914,12 @@
         
         The \textbf{kernel trick} method stands for calculating the relationship of data in higher dimension without transforming the data in higher dimension. The kernel trick reduces the amount of computation required for \textbf{support vector machines} (SVM) by avoiding data transformation.
         
+        The kernel function is defined as:
+        \begin{equation}
+            \kappa(\boldsymbol{x}, \boldsymbol{x}^{'}) = \phi(\boldsymbol{x})^\top \phi(\boldsymbol{x}^{'})
+        \end{equation}
+        where $\phi(\boldsymbol{x})$ is a function that applies a transformation to map the input into a higher dimensional space.
+        
         The kernel function is such as:
         \begin{align}
             \kappa(\boldsymbol{x}, \boldsymbol{x^{'}}) &\in \mathbb{R} \\
