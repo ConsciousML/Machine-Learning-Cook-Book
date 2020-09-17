@@ -961,7 +961,20 @@
             where $r$ is the coefficient of the polynomial and $d$ its degree, while $\sigma$ is known as the bandwith of the \textbf{radial basis function} (RBF).
         
         \subsubsection{Support Vector Machines}
-            The \textbf{support vector machines} were originally designed for binary classification but can be extended to regression and multi-calss classification.
+            \textbf{Support vector machines} were originally designed for binary classification but can be extended to regression and multi-class classification.
+            SVMs are not probabilistic models, their output is a raw prediction.
+            
+            Let's get the basic intuition with the help of Figure \ref{fig:svm}.
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.5\textwidth]{300px-SVM_margin.png}
+                \caption{Discrimination schema of an SVM}
+                \label{fig:svm}
+            \end{figure}
+            SVMs separate the data in two classes using a \textbf{hyperplane}. The distance between the dotted hyperplanes and the hyperplane at the center is known as \textbf{margin}.
+            A margins is passing by one of multiple points, these points are known as \textbf{support vectors}.
+            
+            Any point above the red hyperplane will be classified as $1$ respectively $-1$ for the points below the hyperplane.
         
     \section{Unsupervised Algorithms}. 
         \subsection{Expectation Maximization}
