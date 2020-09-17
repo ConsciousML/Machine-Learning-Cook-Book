@@ -975,6 +975,16 @@
             A margins is passing by one of multiple points, these points are known as \textbf{support vectors}.
             
             Any point above the red hyperplane will be classified as $1$ respectively $-1$ for the points below the hyperplane.
+            In order to predict on an input sample $\boldsymbol{x}$, we compute the linear equation:
+            \begin{align}
+                f(\boldsymbol{x}) &= \boldsymbol{w}^\top \boldsymbol{x} - b \\
+                \hat{y} &= 
+                \begin{cases}
+                    \;\;\;1 & \text{if} \quad f(\boldsymbol{x}) \geq 0 \\
+                    -1 & \text{otherwise}
+                \end{cases}
+            \end{align}
+            
             SVMs try to maximize the margin when seperating the data. This fact plays a role in the generalization of SVM models.
             
             If the data is not linearly separable, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
