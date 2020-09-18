@@ -603,6 +603,12 @@
             &\max_{\boldsymbol{x}}{\min_{\boldsymbol{\lambda}}{\min_{\boldsymbol{\sigma, \sigma \geq 0}}{L(\boldsymbol{x}, \boldsymbol{\lambda}, \boldsymbol{\sigma})}}} \approx \min_{\boldsymbol{x} \in \mathbb{S}}{f(\boldsymbol{x})}
         \end{align}
         where $\lambda_i$ and $\sigma_j$ are the KKT multipliers.
+        When using the generalized Lagrange function, some requirements must be met known as \textbf{KKT conditions} such as:
+        \begin{align}
+            &\nabla f(\boldsymbol{x}^*) - \sum_i{\lambda_i \nabla g^{(i)}(\boldsymbol{x}^*)} - \sum_j{\sigma_j \nabla h^{(j)}(\boldsymbol{x}^*)}  = 0  \quad \text{for maximization}\\
+            &\nabla f(\boldsymbol{x}^*) + \sum_i{\lambda_i \nabla g^{(i)}(\boldsymbol{x}^*)} + \sum_j{\sigma_j \nabla h^{(j)}(\boldsymbol{x}^*)}  = 0   \quad \text{for minimization}
+        \end{align}
+        where $\boldsymbol{x}^*$ is a local optimum.
         
         Minimizing the Lagrangian introduces the \textbf{dual form} of the problem as:
         \begin{equation}
@@ -934,7 +940,7 @@
             
             Decision Trees are very prized by the machine learning community for their interpretability and their handy automatic feature selection. Unfortunately, the decision trees tend to overfit. It is mandatory to limit the max depth parameter to avoid this behavior. Using the ensemble technique is a great way to deal with the tendency of the decision trees to overfit. However, as the model is getting more complex due to aggregation of multiple learners, it is more challenging to interpret a random forest model.
             
-    \subsection{Kernel Methods}
+    \subsection{Support Vector Machines}
         \subsubsection{Kernel functions}
             A \textbf{kernel function} $\kappa(\boldsymbol{x}, \boldsymbol{x^{'}})$ is a measure of similarity between two objects $\boldsymbol{x}, \boldsymbol{x^{'}} \in \chi$ where $\chi$ is an abstract space of higher dimension. 
             
@@ -984,9 +990,10 @@
             \end{align}
             where $r$ is the coefficient of the polynomial and $d$ its degree, while $\sigma$ is known as the bandwith of the \textbf{radial basis function} (RBF).
         
-        \subsubsection{Support Vector Machines}
+        \subsubsection{Support Vector Classifier}
             \textbf{Support vector machines} were originally designed for binary classification but can be extended to regression and multi-class classification.
             SVMs are not probabilistic models, their output is a raw prediction.
+            In this section we will discuss the \textbf{Support vector classifier}.
             
             Let's get the basic intuition with the help of Figure \ref{fig:svm}.
             \begin{figure}[ht]
@@ -1016,11 +1023,24 @@
             \end{align}
             In other words, the optimization problem to solve when training an SVM is to:
             \begin{equation}
-                \min_{\boldsymbol{w}, b}\frac{1}{2}||\boldsymbol{w}||^2 \quad \text{s.t} \quad y_i(\boldsymbol{w}_i^\top \boldsymbol{x} + b) \geq 1, i = 1 : N
+                \min_{\boldsymbol{w}, b}\frac{1}{2}||\boldsymbol{w}||^2 \quad \text{s.t} \quad y_i(\boldsymbol{w}^\top \boldsymbol{x}_i + b) \geq 1, i = 1 : N
             \end{equation}
             The reason we minimize $||\boldsymbol{w}||^2$ instead of $||\boldsymbol{w}||$ is that minimizing the second option is non-convex.
             
             The condition ensures that all samples are on the right side of the hyperplane. Note that this classifier does not allow any misclassification and is known as \textbf{large margin classifier}.
+            
+            The minimization above is in its primal form, we can use the generalized Lagrangian to get its dual form such as:
+            \begin{equation}
+                \min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma}) = \frac{1}{2}||\boldsymbol{w}||^2 - \sum_{i=1}^{N} \sigma_i y_i(\boldsymbol{w}^\top \boldsymbol{x}_i + b - 1)
+            \end{equation}
+            Because the dual problem is a lower bound of the primal problem, we need to maximize the equation above:
+            \begin{equation}
+                \max_{\boldsymbol{\sigma}}\min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma})
+            \end{equation}
+            Because we need to satisfy the KKT conditions, we have:
+            \begin{equation}
+                \frac{\partial L}{\partial \boldsymbol{w}} = 
+            \end{equation}
             
             If the data is not linearly separable, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
             
