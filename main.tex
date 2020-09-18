@@ -611,6 +611,12 @@
         
         The generalized Lagrangian allows us to incorporate the inequality and equality constrains into the objective function resulting in a optimization problem without explicit constrains known a the dual problem.
         
+        Solving the dual problem results in finding a lower bound of the primal problem:
+        \begin{equation}
+            q(\boldsymbol{\lambda}, \boldsymbol{\sigma}) \leq f(\boldsymbol{x^*})
+        \end{equation}
+        with $\boldsymbol{x^*}$ is an optimal solution of the primal problem.
+        
 \chapter{Machine Learning Concepts}
     \section{Supervised and Unsupervised Learning}
         \textbf{Unsupervised learning} algorithms experience a dataset containing many features, then learn useful properties of the structure of this dataset.
