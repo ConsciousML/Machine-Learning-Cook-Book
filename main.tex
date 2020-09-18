@@ -604,6 +604,13 @@
         \end{align}
         where $\lambda_i$ and $\sigma_j$ are the KKT multipliers.
         
+        To minimize the Lagrangian introduces the \textbf{dual form} of the problem as:
+        \begin{equation}
+            q(\boldsymbol{\lambda}, \boldsymbol{\sigma}) = \min_{\boldsymbol{x}} L(\boldsymbol{x, \boldsymbol{\lambda}, \boldsymbol{\sigma}})
+        \end{equation}
+        
+        The generalized Lagrangian allows us to incorporate the inequality and equality constrains into the objective function resulting in a optimization problem without explicit constrains known a the dual problem.
+        
 \chapter{Machine Learning Concepts}
     \section{Supervised and Unsupervised Learning}
         \textbf{Unsupervised learning} algorithms experience a dataset containing many features, then learn useful properties of the structure of this dataset.
