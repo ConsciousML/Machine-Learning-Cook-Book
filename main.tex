@@ -609,13 +609,20 @@
             q(\boldsymbol{\lambda}, \boldsymbol{\sigma}) = \min_{\boldsymbol{x}} L(\boldsymbol{x, \boldsymbol{\lambda}, \boldsymbol{\sigma}})
         \end{equation}
         
-        The generalized Lagrangian allows us to incorporate the inequality and equality constrains into the objective function resulting in a optimization problem without explicit constrains known a the dual problem.
+        The generalized Lagrangian allows us to incorporate the inequality and equality constrains into the objective function resulting in a optimization problem with more relaxed constrains known a the dual problem.
         
         Solving the dual problem results in finding a lower bound of the primal problem:
         \begin{equation}
             q(\boldsymbol{\lambda}, \boldsymbol{\sigma}) \leq f(\boldsymbol{x^*})
         \end{equation}
-        with $\boldsymbol{x^*}$ is an optimal solution of the primal problem.
+        where $\boldsymbol{\sigma} \geq 0$ and $\boldsymbol{x^*}$ is an optimal solution of the primal problem.
+        
+        We want to find the best lower bound such as:
+        \begin{align}
+            &\max_{\boldsymbol{\lambda}, \boldsymbol{\sigma}} q(\boldsymbol{\lambda}, \boldsymbol{\sigma}) \\
+            \text{s.t} \quad &\boldsymbol{\sigma} \geq 0 \\
+            & (\boldsymbol{\lambda} \boldsymbol{\sigma}) \in \{\boldsymbol{\lambda}, \boldsymbol{\sigma} | q(\boldsymbol{\lambda}, \boldsymbol{\sigma}) > -\infty\}
+        \end{align}
         
 \chapter{Machine Learning Concepts}
     \section{Supervised and Unsupervised Learning}
