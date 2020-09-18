@@ -604,7 +604,7 @@
         \end{align}
         where $\lambda_i$ and $\sigma_j$ are the KKT multipliers.
         
-        To minimize the Lagrangian introduces the \textbf{dual form} of the problem as:
+        Minimizing the Lagrangian introduces the \textbf{dual form} of the problem as:
         \begin{equation}
             q(\boldsymbol{\lambda}, \boldsymbol{\sigma}) = \min_{\boldsymbol{x}} L(\boldsymbol{x, \boldsymbol{\lambda}, \boldsymbol{\sigma}})
         \end{equation}
@@ -622,7 +622,7 @@
             & (\boldsymbol{\lambda}, \boldsymbol{\sigma}) \in \{\boldsymbol{\lambda}, \boldsymbol{\sigma} | q(\boldsymbol{\lambda}, \boldsymbol{\sigma}) > -\infty\}
         \end{align}
         
-        The generalized Lagrangian allows us to incorporate the inequality and equality constrains into the objective function resulting in a optimization problem with more relaxed constrains known a the dual problem. Because the dual problem is a lower bound of the primal problem, we try to find the maximum lower bound such as:
+        The generalized Lagrangian allows us to incorporate the inequality and equality constrains into the objective function resulting in a optimization problem without constrains known a the dual problem. Because the dual problem is a lower bound of the primal problem, we try to find the maximum lower bound such as:
         \begin{equation}
             q(\boldsymbol{\lambda}^*, \boldsymbol{\sigma}^*) = f(\boldsymbol{x^*})
         \end{equation}
