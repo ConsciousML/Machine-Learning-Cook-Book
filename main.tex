@@ -977,7 +977,7 @@
             Any point above the red hyperplane will be classified as $1$ respectively $-1$ for the points below the hyperplane.
             In order to predict on an input sample $\boldsymbol{x}$, we compute the linear equation:
             \begin{align}
-                f(\boldsymbol{x}) &= \boldsymbol{w}^\top \boldsymbol{x} - b \\
+                f(\boldsymbol{x}) &= \boldsymbol{w}^\top \boldsymbol{x} + b \\
                 \hat{y} &= 
                 \begin{cases}
                     \;\;\;1 & \text{if} \quad f(\boldsymbol{x}) \geq 0 \\
@@ -994,10 +994,11 @@
             \begin{equation}
                 \min_{\boldsymbol{w}, b}\frac{1}{2}||\boldsymbol{w}||^2 \quad \text{s.t} \quad y_i(\boldsymbol{w}_i^\top \boldsymbol{x} + b) \geq 1, i = 1 : N
             \end{equation}
-            The condition ensures that all samples are on the right side of the hyperplane.
+            The reason we minimize $||\boldsymbol{w}||^2$ instead of $||\boldsymbol{w}||$ is that minimizing the second option is non-convex.
+            
+            The condition ensures that all samples are on the right side of the hyperplane. Note that this classifier does not allow any misclassification and is known as \textbf{large margin classifier}.
             
             If the data is not linearly separable, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
-            
             
         
     \section{Unsupervised Algorithms}. 
