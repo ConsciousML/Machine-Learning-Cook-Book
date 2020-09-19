@@ -1032,15 +1032,19 @@
             The minimization above is in its primal form, we can use the generalized Lagrangian to get its dual form such as:
             \begin{equation}
                 \min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma}) = \frac{1}{2}||\boldsymbol{w}||^2 - \sum_{i=1}^{N} \sigma_i y_i(\boldsymbol{w}^\top \boldsymbol{x}_i + b - 1)
+                \label{eq:lagrange}
             \end{equation}
+            We also need to satisfy the KKT conditions, such as:
+            \begin{align}
+                \frac{\partial L}{\partial \boldsymbol{w}} = \boldsymbol{w} - \sum_{i=1}^{N} \sigma_i y_i\boldsymbol{x}_i &= 0 \Rightarrow \boldsymbol{w} = \sum_{i=1}^{N} \sigma_i y_i\boldsymbol{x}_i \\
+                \frac{\partial L}{\partial \boldsymbol{b}} = -\sum_{i=1}^{N}\sigma_i y_i &= 0 \Rightarrow \sum_{i=1}^{N}\sigma_i y_i = 0
+            \end{align}
+            
             Because the dual problem is a lower bound of the primal problem, we need to maximize the equation above:
             \begin{equation}
                 \max_{\boldsymbol{\sigma}}\min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma})
             \end{equation}
-            Because we need to satisfy the KKT conditions, we have:
-            \begin{equation}
-                \frac{\partial L}{\partial \boldsymbol{w}} = 
-            \end{equation}
+            
             
             If the data is not linearly separable, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
             
