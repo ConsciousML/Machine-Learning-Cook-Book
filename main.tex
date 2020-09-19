@@ -1048,9 +1048,23 @@
             \begin{equation}
                 \min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma}) = \sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \boldsymbol{x}_i^\top \boldsymbol{x}_j
             \end{equation}
+            The greatest quality of support vector machines is that they never get stuck in a local minima, respectively maxima if we have a maximization problem.
+            
+            For predicting on new samples, we use:
+            \begin{equation}
+                y^{\text{test}} = \text{sign}\left(\sum_{i=1}^{N}\boldsymbol{w}^\top \boldsymbol{x}^{\text{test}} + b\right)
+            \end{equation}
             
             If the data is not linearly separable, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
             
+            By introducing the kernel trick, the optimization problem is such as:
+            \begin{equation}
+                \min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma}) = \sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \phi(\boldsymbol{x}_i)^\top \phi(\boldsymbol{x}_j)
+            \end{equation}
+            and the prediction:
+            \begin{equation}
+                y^{\text{test}} = \text{sign}\left(\sum_{i=1}^{N}\boldsymbol{w}^\top \phi(\boldsymbol{x}^{\text{test}}) + b\right)
+            \end{equation}
         
     \section{Unsupervised Algorithms}. 
         \subsection{Expectation Maximization}
