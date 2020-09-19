@@ -1044,7 +1044,10 @@
             \begin{equation}
                 \max_{\boldsymbol{\sigma}}\min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma})
             \end{equation}
-            
+            By substituting these values in \ref{eq:lagrange} we get:
+            \begin{equation}
+                \min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma}) = \sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \boldsymbol{x}_i^\top \boldsymbol{x}_j
+            \end{equation}
             
             If the data is not linearly separable, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
             
