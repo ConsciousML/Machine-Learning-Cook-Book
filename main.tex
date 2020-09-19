@@ -944,21 +944,22 @@
         \subsubsection{Kernel functions}
             A \textbf{kernel function} $\kappa(\boldsymbol{x}, \boldsymbol{x^{'}})$ is a measure of similarity between two objects $\boldsymbol{x}, \boldsymbol{x^{'}} \in \chi$ where $\chi$ is an abstract space of higher dimension. 
             
-            The \textbf{kernel trick} method stands for calculating the relationship of data in higher dimension without transforming the data in higher dimension. The kernel trick reduces the amount of computation required for \textbf{support vector machines} (SVM) by avoiding data transformation.
+            Let's assume that we have $\boldsymbol{X}$ a non-linearly separable data. We would like to transform the data into a higher dimensional space to make it linearly separable. Let us define $\phi$ a function that maps the data into a higher dimensional space. A classical approach would be to compute $\phi(\boldsymbol{X})$ but this transformation may be very computationally heavy. Instead we use the kernel trick.
+            
+            The \textbf{kernel trick} method stands for calculating the relationship of data in higher dimension without actually transforming the data in this target space. The kernel trick reduces the amount of computation required of kernelized algorithms.
+            
+            The main idea is, instead of computing $\phi(\boldsymbol{X})$, we will compute the dot product $\phi(\boldsymbol{X}_i)^\top\phi(\boldsymbol{X}_j)$ for all the components of $\boldsymbol{X}$. In fact, we will know the relationship of the data in higher dimension, without ever computing the transformation of the whole data.
             
             The kernel function is defined as:
             \begin{equation}
                 \kappa(\boldsymbol{x}, \boldsymbol{x}^{'}) = \phi(\boldsymbol{x})^\top \phi(\boldsymbol{x}^{'})
             \end{equation}
-            where $\phi(\boldsymbol{x})$ is a function that applies a transformation to map the input into a higher dimensional space.
-            
-            As long as there is some higher dimensional space in which the dot product of $\phi$ results in the expression of a function in higher dimensional space, then $\kappa(\boldsymbol{x}, \boldsymbol{x}^{'})$ can be calculated just using a dot product.
             
             More formally, a kernel can be defined as a dot product if it satisfies the requirement that the Gram matrix
             \begin{equation}
                 \boldsymbol{K}_{ij} = \kappa(\boldsymbol{x}_i, \boldsymbol{x}^{'}_j)
             \end{equation}
-            is positive definite for any set of input $\{\boldsymbol{x}_i\}_{i=1}^{n}$. Such a kernel is called a \textbf{Mercer kernel}. The importance of Mercer kernels lies in the \textbf{Mercer's theorem}: if the Gram matrix of a kernel is positive definite, we can compute an eigen vector decomposition as:
+            is positive definite for any set of input $\{\boldsymbol{x}_i\}_{i=1}^{n}$. Such a kernel is called a \textbf{Mercer kernel}. The importance of Mercer kernels lies in the \textbf{Mercer's theorem}: if the Gram matrix of a kernel is positive definite, we can compute an eigen vector decomposition such as:
             \begin{equation}
                 \boldsymbol{K} = \boldsymbol{Q}^\top \boldsymbol{\Lambda} \boldsymbol{Q}
             \end{equation}
@@ -1065,7 +1066,7 @@
             
             By introducing the kernel trick, the optimization problem is such as:
             \begin{equation}
-                \max_{\boldsymbol{\sigma}; \boldsymbol{\sigma} \geq 0} \: \sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \phi(\boldsymbol{x}_i)^\top \phi(\boldsymbol{x}_j)
+                \max_{\boldsymbol{\sigma}; \boldsymbol{\sigma} \geq 0}\sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \phi(\boldsymbol{x}_i)^\top \phi(\boldsymbol{x}_j)
             \end{equation}
             and the prediction:
             \begin{equation}
