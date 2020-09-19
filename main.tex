@@ -1048,6 +1048,12 @@
             \begin{equation}
                 \min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma}) = \sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \boldsymbol{x}_i^\top \boldsymbol{x}_j
             \end{equation}
+            
+            The final dual optimization is:
+            \begin{equation}
+                \max_{\boldsymbol{\sigma}; \boldsymbol{\sigma} \geq 0} \: \sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \boldsymbol{x}_i^\top \boldsymbol{x}_j
+            \end{equation}
+            
             The greatest quality of support vector machines is that they never get stuck in a local minima, respectively maxima if we have a maximization problem.
             
             For predicting on new samples, we use:
@@ -1059,7 +1065,7 @@
             
             By introducing the kernel trick, the optimization problem is such as:
             \begin{equation}
-                \min_{\boldsymbol{x}, b}L(\boldsymbol{x}, b, \boldsymbol{\sigma}) = \sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \phi(\boldsymbol{x}_i)^\top \phi(\boldsymbol{x}_j)
+                \max_{\boldsymbol{\sigma}; \boldsymbol{\sigma} \geq 0} \: \sum_{i=1}^{N}\sigma_i - \frac{1}{2} \sum_{i=1}^{N}\sum_{j=1}^{N} \sigma_i \sigma_j y_i y_j \phi(\boldsymbol{x}_i)^\top \phi(\boldsymbol{x}_j)
             \end{equation}
             and the prediction:
             \begin{equation}
