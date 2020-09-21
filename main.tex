@@ -1028,7 +1028,7 @@
             \end{equation}
             The reason we minimize $||\boldsymbol{w}||^2$ instead of $||\boldsymbol{w}||$ is that minimizing the second option is non-convex.
             
-            The condition ensures that all samples are on the right side of the hyperplane. Note that this classifier does not allow any misclassification and is known as \textbf{large margin classifier}.
+            The condition ensures that all samples are on the right side of the hyperplane. Note that this classifier does not allow any misclassification and is known as \textbf{hard margin classifier}.
             
             The minimization above is in its primal form, we can use the generalized Lagrangian to get its dual form such as:
             \begin{equation}
@@ -1061,8 +1061,10 @@
             \begin{equation}
                 y^{\text{test}} = \text{sign}\left(\sum_{i=1}^{N}\boldsymbol{w}^\top \boldsymbol{x}^{\text{test}} + b\right)
             \end{equation}
-            
-            If the data is not linearly separable, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
+
+            If the data is not linearly separable, we can introduce the \textbf{soft margin classifier}.            
+
+            If hard and soft margin classifier does not perform well, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
             
             By introducing the kernel trick, the optimization problem is such as:
             \begin{equation}
