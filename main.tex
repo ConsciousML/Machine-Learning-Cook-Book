@@ -1062,9 +1062,7 @@
                 y^{\text{test}} = \text{sign}\left(\sum_{i=1}^{N}\boldsymbol{w}^\top \boldsymbol{x}^{\text{test}} + b\right)
             \end{equation}
 
-            If the data is not linearly separable, we can introduce the \textbf{soft margin classifier}.            
-
-            If hard and soft margin classifier does not perform well, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
+            If the data is non linearly separable, we can use the kernel trick discussed in the previous section to translate the data into a higher dimensional space where it is linearly separable. It is quite important to remember that the kernel trick allows us to avoid computing the transformation in the higher dimensional space which saves a lot of computational time.
             
             By introducing the kernel trick, the optimization problem is such as:
             \begin{equation}
@@ -1074,6 +1072,10 @@
             \begin{equation}
                 y^{\text{test}} = \text{sign}\left(\sum_{i=1}^{N}\boldsymbol{w}^\top \phi(\boldsymbol{x}^{\text{test}}) + b\right)
             \end{equation}
+
+            If the data is not linearly separable, even after using the kernel trick, we can use a \textbf{soft margin classifier}.
+
+            
         
     \section{Unsupervised Algorithms}. 
         \subsection{Expectation Maximization}
