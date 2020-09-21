@@ -991,7 +991,7 @@
             \end{align}
             where $r$ is the coefficient of the polynomial and $d$ its degree, while $\sigma$ is known as the bandwith of the \textbf{radial basis function} (RBF).
         
-        \subsubsection{Support Vector Classifier}
+        \subsubsection{Hard-Margin Support Vector Machines}
             \textbf{Support vector machines} were originally designed for binary classification but can be extended to regression and multi-class classification.
             SVMs are not probabilistic models, their output is a raw prediction.
             In this section we will discuss the \textbf{Support vector classifier}.
@@ -1075,6 +1075,9 @@
                 y^{\text{test}} = \text{sign}\left(\sum_{i=1}^{N}\boldsymbol{w}^\top \phi(\boldsymbol{x}^{\text{test}}) + b\right)
             \end{equation}
 
+            
+        \subsubsection{Soft-Margin Support Vector Machines}
+
             If the data is not linearly separable, even after using the kernel trick, we can use a \textbf{soft margin classifier}. We introduce slack variables $\zeta_i \geq 0$ where:
             \begin{itemize}
                 \item $\zeta_i = 0$ means that the point lies in the correct margin boundary and $\zeta_i = |y_i - f_i|$ otherwise.
@@ -1091,6 +1094,14 @@
                 \text{s.t} \quad &y_i(\boldsymbol{w}^\top \boldsymbol{x}_i + b) \geq 1 - \zeta_i, && \forall i \in \{1, \dots, N\} \\
                 &\zeta_i \geq 0 && \forall i \in \{1, \dots, N\}
             \end{align}
+            The soft margin penalization amkes the model be more flexible and allows for some misclassification just like so:
+            \ref{fig:svm}.
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=0.8\textwidth]{softmargin.png}
+                \caption{Discrimination schema of a soft-margin SVM}
+                \label{fig:svm}
+            \end{figure}
             
         
     \section{Unsupervised Algorithms}. 
