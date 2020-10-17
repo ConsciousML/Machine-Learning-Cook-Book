@@ -30,10 +30,9 @@ jobs:
         # uses: xu-cheng/latex-action@dacf2cfbdd5fd768c2298cbdc9e105bd9ed7f293
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: axelm_resume.tex
+          root_file: main.tex
           compiler: pdflatex
-          args: ''
-          extra_packages: fontawesome, background
+          args: '-shell-escape'
                 
       - name: Add & Commit
         # You may pin to the exact commit or the version.
